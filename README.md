@@ -1,2 +1,2 @@
 # JabinHao.github.io
-[https://jabinhao.github.io/](个人博客)
+[个人博客](https://jabinhao.github.io/)
