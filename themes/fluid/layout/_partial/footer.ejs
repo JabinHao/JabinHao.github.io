@@ -13,6 +13,15 @@
         <span>Hexo</span></a>
     </div>
     <div>
+      <%- partial('_partial/statistics.ejs') %>
+      <%- partial('_partial/beian.ejs') %>
+      <% if(theme.web_analytics.cnzz) { %>
+        <!-- cnzz Analytics Icon -->
+        <span id="cnzz_stat_icon_<%- theme.web_analytics.cnzz %>" style="display: none"></span>
+      <% } %>
+      </div>
+
+    <div>
       <span id="timeDate">载入天数...</span>
       <span id="times">载入时分秒...</span>
       <script>
@@ -43,12 +52,7 @@
       setInterval("createtime()",250);
       </script>
     </div>
-    <%- partial('_partial/statistics.ejs') %>
-    <%- partial('_partial/beian.ejs') %>
-    <% if(theme.web_analytics.cnzz) { %>
-      <!-- cnzz Analytics Icon -->
-      <span id="cnzz_stat_icon_<%- theme.web_analytics.cnzz %>" style="display: none"></span>
-    <% } %>
+    
   </div>
 </footer>
 

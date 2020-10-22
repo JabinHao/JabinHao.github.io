@@ -137,6 +137,7 @@ navbar:
     - { key: 'tag', link: '/tags/', icon: 'iconfont icon-tags-fill' }
     - { key: 'about', link: '/about/', icon: 'iconfont icon-user-fill' }
     - { key: 'links', link: '/links/', icon: 'iconfont icon-link-fill' }  # 友链页，把前面#去掉即可展示
+  #  - { key: 'links', link: '/links/', icon: 'iconfont icon-link-fill'}
 
 search: # 搜索栏，基于 hexo-generator-search 插件，若已安装其他搜索插件请关闭此功能，以避免生成多余的索引文件。
   enable: true
@@ -233,7 +234,7 @@ post:  # 部分配置同时控制自定义页面，注意备注
   toc:  # 文章右侧目录
     enable: true
     headingSelector: h1,h2,h3,h4,h5,h6
-    collapseDepth: 0  # 层级的折叠深度，0 是全部折叠，6 是全部不折叠
+    collapseDepth: 3  # 层级的折叠深度，0 是全部折叠，6 是全部不折叠
   copyright:  # 版权声明
     enable: false
     content: '本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！'
@@ -435,3 +436,5 @@ links:
       link: 'https://hexo.fluid-dev.com/docs/example/',
       image: '/img/favicon.png'
     }
+
+rss: /atom.xml

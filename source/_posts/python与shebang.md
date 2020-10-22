@@ -1,7 +1,14 @@
 ---
 title: python与shebang
+category:
+  - linux
+tags:
+  - python
+  - linux
+index_img: /img/post/python_shebang.png
+excerpt: Linux下python文件的Shebang的几种写法
+abbrlink: afc78532
 date: 2020-10-16 16:40:14
-tags: [python, linux]
 ---
 # 简介
 在Python脚本的第一行，常常能看到 `#!/usr/bin/env python3` 或者 `#!/usr/bin/python3` 字样，其中#!符号在计算机行业中叫做 “Shebang”,  其作用是指定由哪个解释器来执行脚本。在这里即是指定python3作为解释器。
