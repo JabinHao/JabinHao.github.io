@@ -3,7 +3,7 @@ title: git笔记
 category: git
 tags:
   - git
-index_img: /img/favicon.png
+index_img: /img/post/git.png
 excerpt: git学习笔记，记录git基本操作及使用中遇到的问题
 abbrlink: d9283bc6
 date: 2020-10-08 18:08:00

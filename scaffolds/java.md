@@ -6,6 +6,6 @@ date: {{ date }}
 updated: {{ date }}
 tags: [java]
 categories: [Java笔记]
-banner_img: /img/default.png 
-index_img: /img/example.jpg 
+banner_img: /img/dog.png
+index_img: /img/post/Java/java_logo.jpg
 ---
