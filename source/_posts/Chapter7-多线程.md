@@ -1,12 +1,14 @@
 ---
 title: Chapter7 多线程
-excerpt: 摘要
+excerpt: 多线程的四种创建方法，解决线程安全问题的三种方法，线程的通信
 tags:
   - java
 categories:
   - Java笔记
+  - java基础
 banner_img: /img/dog.png
 index_img: /img/post/Java/java_logo.png
+abbrlink: e4d260dd
 date: 2020-10-24 20:38:47
 updated: 2020-10-24 20:38:47
 subtitle:
@@ -91,7 +93,7 @@ subtitle:
 
 ## 7.3 线程的生命周期
 如图：  
-![123](https://cdn.jsdeliver.net/gh/JabinHao/mihs/img/xiaoxinlife.png)
+![](https://raw.githubusercontent.com/JabinHao/mihs/master/img/lifetime.png)
 
 ## 7.4 线程的同步
 通过同步机制解决线程安全问题  
@@ -174,6 +176,94 @@ synchronized还可以放在方法声明中，表示整个方法为同步方法
 
 ## 7.6 JDK5.0 新增线程创建方式
 ### 1. 实现`Callable`接口
+1. 步骤
+   1. 创建`Callable`接口的实现类
+   2. 实现 `call`方法，将此线程需要的操作声明在其中
+   3.  创建实现类的对象
+   4.  将对象作为参数传入FutureTask构造器中，创建`FutureTask`类的对象
+   5.  将`FutureTask`类的对象作为参数创建Thread类的对象，并调用`start`方法
+   6.  `FutureTask对象.get()`方法可以获取call方法的返回值
+2. 说明
+   1. call方法有返回值
+   2. call方法可以抛出异常，并被外面的操作捕获
+   3. Callable支持泛型
+3. 代码示例
+   ```java
+   public class ThreadNew {
+       public static void main(String[] args) {
+           NumThread numThread = new NumThread();
 
+           FutureTask futureTask =  new FutureTask(numThread);
+
+           new Thread(futureTask).start();
+
+           try{
+               Object sum = futureTask.get();
+               System.out.println(sum);
+           }catch (InterruptedException e){
+               e.printStackTrace();
+           }catch (ExecutionException e){
+               e.printStackTrace();
+           }
+       }
+
+   }
+   // 自定义实现类
+   class NumThread implements Callable{
+       @Override
+       public Object call() throws Exception {
+           // 线程内容，可以有返回值
+       }
+   }
+   ```
+
+### 2. 使用线程池
+1. 使用
+   ```java
+   public class ThreadPool {
+
+       public static void main(String[] args) {
+           //1. 提供指定线程数量的线程池
+           ExecutorService service = Executors.newFixedThreadPool(10);
+           ThreadPoolExecutor service1 = (ThreadPoolExecutor) service;
+           //设置线程池的属性
+   //        ExecutorService 是接口，ThreadPoolExecutor是其实现类，service为其对象
+   //        service1.setCorePoolSize(15);
+   //        service1.setKeepAliveTime();
+
+
+           //2.执行指定的线程的操作。需要提供实现Runnable接口或Callable接口实现类的对象
+           service.execute(new NumberThread());//适用于Runnable
+           service.execute(new NumberThread1());//适用于Runnable
+
+   //        service.submit(Callable callable);//适用于Callable
+           //3.关闭连接池
+           service.shutdown();
+       }
+   }
+
+   class NumberThread implements Runnable{
+
+       @Override
+       public void run() {
+           // 线程内容
+       }
+   }
+
+   class NumberThread1 implements Runnable{
+
+       @Override
+       public void run() {
+           // 线程内容
+       }
+   }
+   ```
+2. 优点
+   1. 提高响应速度（减少了创建新线程的时间）
+   2. 降低资源消耗（重复利用线程池中线程，不需要每次都创建）
+   3. 便于线程管理
+      * corePoolSize：核心池的大小
+      * maximumPoolSize：最大线程数
+      * keepAliveTime：线程没有任务时最多保持多长时间后会终止
 
 

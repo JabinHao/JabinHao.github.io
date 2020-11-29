@@ -5,6 +5,7 @@ tags:
   - java
 categories:
   - Java笔记
+  - java基础
 banner_img: /img/dog.png
 index_img: /img/post/Java/java_logo.png
 abbrlink: e1a4b3a0
