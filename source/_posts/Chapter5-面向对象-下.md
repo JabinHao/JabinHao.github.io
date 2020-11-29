@@ -6,7 +6,7 @@ tags:
 categories:
   - Java笔记
 banner_img: /img/dog.png
-index_img: /img/post/Java/java_logo.jpg
+index_img: /img/post/Java/java_logo.png
 abbrlink: e1a4b3a0
 date: 2020-10-21 01:25:23
 updated: 2020-10-21 01:25:23
@@ -211,6 +211,7 @@ Human p = new Human(){
 ### 2. 分类  
    * 成员内部类：静态、非静态
    * 局部内部类（方法内、代码块内、构造器内）
+
 ### 3. 成员内部类
 1. 特点
    * 可以被四种权限修饰
@@ -226,3 +227,11 @@ Human p = new Human(){
       // 通过外部类对象创建内部类对象
       外部类.内部类 p2 = new p.内部类();
       ```
+
+### 4. 局部内部类
+
+* 局部内部类的方法中，调用该局部的局部变量时，此变量必须声明为 `final`
+* JDK8 及以后版本可不必显示声明，默认为 `final`
+
+
+

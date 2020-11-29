@@ -6,7 +6,7 @@ tags:
 categories:
   - Java笔记
 banner_img: /img/dog.png
-index_img: /img/post/Java/java_logo.jpg
+index_img: /img/post/Java/java_logo.png
 abbrlink: f598b0dc
 date: 2020-10-19 22:12:14
 updated: 2020-10-21 01:25:14
