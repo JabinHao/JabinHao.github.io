@@ -10,6 +10,7 @@ categories:
   - JavaWeb
 banner_img: /img/dog.png
 index_img: /img/post/Java/java_logo.png
+abbrlink: 7ba5e8e6
 date: 2020-11-27 20:59:31
 updated: 2020-11-29 21:53:31
 subtitle:
