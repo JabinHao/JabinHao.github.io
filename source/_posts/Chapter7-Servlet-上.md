@@ -1,6 +1,6 @@
 ---
 title: Chapter7 Servlet(上)
-excerpt: 摘要
+excerpt: Servlet简介、ServletConfig类的使用、ServletContext`类、HTTP协议
 tags:
   - java
   - JavaWeb
