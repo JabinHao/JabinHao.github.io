@@ -9,12 +9,13 @@ categories:
   - NIO
 banner_img: /img/dog.png
 index_img: /img/post/Java/java_logo.png
+abbrlink: 659b75d3
 date: 2020-12-06 01:32:06
 updated: 2020-12-06 01:32:06
 subtitle:
 ---
-## 1. 缓冲区
-### 1.1 概述
+## 1.1 缓冲区
+### 1.1.1 概述
 1. 定义  
    缓冲区（Buffer）：在 Java NIO 中负责数据的存取。缓冲区就是数组。用于存储不同数据类型的数据
 
@@ -32,14 +33,14 @@ subtitle:
     ByteBuffer buf = ByteBuffer.allocate(1024);
     ```
 
-### 1.2 缓冲区中的四个核心属性：
+### 1.1.2 缓冲区中的四个核心属性：
 1. `capacity` : 容量，表示缓冲区中最大存储数据的容量。一旦声明不能改变。
 2. `limit` : 界限，表示缓冲区中可以操作数据的大小。（limit 后数据不能进行读写）
 3. `position` : 位置，表示缓冲区中正在操作数据的位置。
 4. `mark` : 标记，表示记录当前 position 的位置。可以通过 `reset()` 恢复到 `mark` 的位置  
 0 <= mark <= position <= limit <= capacity
 
-### 1.2 方法
+### 1.1.3 方法
 1. 常用方法
    * `put()` : 存入数据到缓冲区中
    * `get()` : 获取缓冲区中的数据
@@ -116,7 +117,7 @@ subtitle:
         }
     }
     ```
-### 1.4 直接缓冲区与非直接缓冲区：
+### 1.1.4 直接缓冲区与非直接缓冲区：
 1. 非直接缓冲区：通过 `allocate()` 方法分配缓冲区，将缓冲区建立在 JVM 的内存中
 2. 直接缓冲区：通过 `allocateDirect()` 方法分配直接缓冲区，将缓冲区建立在物理内存中。可以提高效率
 3. `isDirect()`方法：判断是否为直接缓冲区
@@ -128,8 +129,8 @@ subtitle:
     }
     ```
 
-## 2. 通道
-### 2.1 概述
+## 1.2 通道
+### 1.2.1 概述
 1. 简介
    * 通道Channel是一个接口，定义在`java.nio.channels`包下
    * 通道用于源节点与目标节点的连接，本身不能直接访问数据
@@ -145,7 +146,7 @@ subtitle:
    * `public final long read(ByteBuffer[] dsts)`：将Channel中的数据“分散”到`ByteBuffer[]`
    * `public abstract int write(ByteBuffer src)`：将`ByteBuffer`中的数据写入到Channel
    * `public final long write(ByteBuffer[] srcs)`：将`ByteBuffer[]`中的数据“聚集”到Channel
-### 2.2 获取通道
+### 1.2.2 获取通道
 1. 通过调用支持通道的对象的`getChannel()`方法，支持通道的类有：
    * 本地IO
       * `FileInputStream`
@@ -158,7 +159,7 @@ subtitle:
 2. JDK1.7中的NIO.2针对各个通道(即Channel实现类)提供了静态方法 `open()`
 3. JDK1.7中的NIO.2的Files工具类的静态方法 `newByteChannel()`
 
-### 2.3 使用通道
+### 1.2.3 使用通道
 1. 使用非直接缓冲区
    ```java
     FileInputStream fis = new FileInputStream("img/cat.jpg");
@@ -201,7 +202,7 @@ subtitle:
     outChannel.close();   
     ```
 
-### 2.4 通道间的数据传输
+### 1.2.4 通道间的数据传输
 1. 方法
    * `public abstract long transferTo(long position, long count,WritableByteChannel target)`：将数据从源通道传输到其他Channel中
    * `public abstract long transferFrom(ReadableByteChannel src, long position, long count)` ：将数据从源通道传输到其他Channel中
@@ -217,7 +218,7 @@ subtitle:
     outChannel.close();
     ```
 
-### 2.5 分散与聚集
+### 1.2.5 分散与聚集
 1. 概念
    * 分散读取（Scattering Reads）是指从Channel中读取的数据“分散”到多个Buffer中。
    * 聚集写入（Gathering Writes）是指将多个Buffer中的数据“聚集”到Channel
@@ -245,7 +246,7 @@ subtitle:
     channel2.write(bufs);
     ```
 
-### 2.6 字符集 Charset
+### 1.2.6 字符集 Charset
 1. 概念
    * 编码：字符串 -> 字节数组
    * 字节数组 -> 字符串
