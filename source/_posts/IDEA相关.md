@@ -1,5 +1,6 @@
 ---
 title: IDEA相关
+excerpt: IDEA使用过程中遇到的一些问题等
 tags:
   - idea
 categories:
