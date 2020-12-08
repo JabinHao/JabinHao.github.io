@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-12-06T12:55:43.000Z</updated>
+  <updated>2020-12-08T13:21:24.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,6 +17,52 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Chapter2 IOC</title>
+    <link href="http://example.com/posts/336b991c/"/>
+    <id>http://example.com/posts/336b991c/</id>
+    <published>2020-12-08T13:21:24.000Z</published>
+    <updated>2020-12-08T13:21:24.000Z</updated>
+    
+    
+    <summary type="html">摘要</summary>
+    
+    
+    
+    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="Spring" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/Spring/"/>
+    
+    
+    <category term="java" scheme="http://example.com/tags/java/"/>
+    
+    <category term="IOC" scheme="http://example.com/tags/IOC/"/>
+    
+    <category term="spring" scheme="http://example.com/tags/spring/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Chapter1 Spring框架概述</title>
+    <link href="http://example.com/posts/1f7fa6d1/"/>
+    <id>http://example.com/posts/1f7fa6d1/</id>
+    <published>2020-12-06T13:48:55.000Z</published>
+    <updated>2020-12-06T13:48:55.000Z</updated>
+    
+    
+    <summary type="html">Spring框架概述，版本为Spring5x</summary>
+    
+    
+    
+    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="Spring" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/Spring/"/>
+    
+    
+    <category term="java" scheme="http://example.com/tags/java/"/>
+    
+  </entry>
+  
+  <entry>
     <title>IDEA相关</title>
     <link href="http://example.com/posts/659b75d3/"/>
     <id>http://example.com/posts/659b75d3/</id>
@@ -24,13 +70,7 @@
     <updated>2020-12-06T12:55:43.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html">&lt;h2 id=&quot;1-配置&quot;&gt;&lt;a href=&quot;#1-配置&quot; class=&quot;headerlink&quot; title=&quot;1. 配置&quot;&gt;&lt;/a&gt;1. 配置&lt;/h2&gt;&lt;h2 id=&quot;2-常用快捷键&quot;&gt;&lt;a href=&quot;#2-常用快捷键&quot; class=&quot;headerlink&quot;</summary>
-        
-      
+    <summary type="html">IDEA使用过程中遇到的一些问题等</summary>
     
     
     
@@ -443,52 +483,6 @@
     <id>http://example.com/posts/8484ed1d/</id>
     <published>2020-11-20T13:15:46.000Z</published>
     <updated>2020-11-20T13:15:46.000Z</updated>
-    
-    
-    <summary type="html">摘要</summary>
-    
-    
-    
-    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="juc" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/juc/"/>
-    
-    
-    <category term="java" scheme="http://example.com/tags/java/"/>
-    
-    <category term="juc" scheme="http://example.com/tags/juc/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Chapter4 Callable的使用</title>
-    <link href="http://example.com/posts/a338db42/"/>
-    <id>http://example.com/posts/a338db42/</id>
-    <published>2020-11-20T13:15:27.000Z</published>
-    <updated>2020-11-20T13:15:27.000Z</updated>
-    
-    
-    <summary type="html">摘要</summary>
-    
-    
-    
-    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="juc" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/juc/"/>
-    
-    
-    <category term="java" scheme="http://example.com/tags/java/"/>
-    
-    <category term="juc" scheme="http://example.com/tags/juc/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Chapter3 集合的线程不安全问题</title>
-    <link href="http://example.com/posts/e2095eb2/"/>
-    <id>http://example.com/posts/e2095eb2/</id>
-    <published>2020-11-19T15:47:53.000Z</published>
-    <updated>2020-11-19T15:47:53.000Z</updated>
     
     
     <summary type="html">摘要</summary>
