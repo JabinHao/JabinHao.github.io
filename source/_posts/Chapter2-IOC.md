@@ -44,6 +44,7 @@ subtitle:
             }
         }
         ```
+
 ### 2.1.2 `BeanFactory`接口
    * IOC思想基于 IOC 容器完成， IOC容器底层就是对象工厂
    * Spring 提供 IOC 容器实现两种方式：（两个接口）
@@ -136,6 +137,7 @@ subtitle:
             ```xml
             <bean name="book" class="com.atguigu.spring5.Book" p:bnmae="亲密关系" p:bauthor="罗兰·米勒"></bean>
             ```
+            
 ### 2.2.2 xml注入其他属性类型
 1. 字面量
    * null值：通过null标签设置
