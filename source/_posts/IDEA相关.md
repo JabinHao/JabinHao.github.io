@@ -7,7 +7,7 @@ categories:
   - Others
 banner_img: /img/dog.png
 index_img: /img/post/IDEA_logo.png
-abbrlink: 659b75d3
+abbrlink: 4fbe636e
 date: 2020-12-06 20:55:43
 updated: 2020-12-06 20:55:43
 subtitle:
