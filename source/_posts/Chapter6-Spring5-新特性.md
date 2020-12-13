@@ -9,6 +9,7 @@ categories:
   - Spring
 banner_img: /img/dog.png
 index_img: /img/post/spring-framework_logo.png
+abbrlink: 35e69c7c
 date: 2020-12-11 23:45:46
 updated: 2020-12-11 23:45:46
 subtitle:

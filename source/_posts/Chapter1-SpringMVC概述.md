@@ -9,6 +9,7 @@ categories:
   - SpringMVC
 banner_img: /img/dog.png
 index_img: /img/post/springmvc_logo.png
+abbrlink: 838e3ec7
 date: 2020-12-13 15:27:32
 updated: 2020-12-13 15:27:32
 subtitle:
@@ -95,7 +96,7 @@ SpringMVC 也叫 Spring web mvc。是 Spring 框架的一部分，是在 Spring3
         ```
    * 配置servlet-mapping，使用框架时，url-pattern有两种形式
      * 使用扩展名：`*.xxx`，xxx是自定义的扩展名，常用 `*.do`、`*.action`、`*.mvc` 等
-     * 使用斜杠 “/”
+     * 使用斜杠 “/”  
 
 4. 创建一个发起请求的页面 index.jsp
     * webapp目录下
@@ -113,8 +114,8 @@ SpringMVC 也叫 Spring web mvc。是 Spring 框架的一部分，是在 Spring3
         </html>
         ```
 5. 创建控制器(处理器)类
-   * 在类的上面加入@Controller注解，创建对象，并放入到springmvc容器中
-   * 在类中的方法上面加入@RequestMapping注解（请求映射）。
+   * 在类的上面加入`@Controller`注解，创建对象，并放入到springmvc容器中
+   * 在类中的方法上面加入`@RequestMapping`注解（请求映射）。
      * 称为处理器方法或控制器方法
      * 作用：为请求地址绑定方法
      * 属性（value）：String，表示请求的uri地址（some.do），唯一，使用时推荐以“/”开头
@@ -122,27 +123,95 @@ SpringMVC 也叫 Spring web mvc。是 Spring 框架的一部分，是在 Spring3
      * 返回值：`ModelAndView`
      * src/main/java/com/powernode/controller/MyController.java：
         ```java
-
+        @Controller
+        public class MyController {
+            // 处理用户提交的请求
+            @RequestMapping(value = "/some.do")
+            public ModelAndView doSome() {
+                ModelAndView modelAndView = new ModelAndView();
+                // 添加数据，框架最后会将数据存入request作用域
+                modelAndView.addObject("msg","欢迎使用springmvc");
+                modelAndView.addObject("fun","执行doSome方法");
+                // 指定视图（请求转发）
+                modelAndView.setViewName("/show.jsp");
+                return modelAndView;
+            }
+        }
         ```
 
 6. 创建一个作为结果的jsp，显示请求的处理结果。
-
+   * webapp/show.jsp
+    ```html
+    <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+    <html>
+    <head>
+        <title>Title</title>
+    </head>
+    <body>
+        <h3>show.jsp</h3>
+        <h3>msg数据：${msg}</h3><br/>
+        <h3>fun数据：${fun}</h3>
+    </body>
+    </html>
+    ```
 7. 创建springmvc的配置文件（spring的配置文件一样）
-  1）声明组件扫描器， 指定@Contorller注解所在的包名
-  2）声明视图解析器。帮助处理视图的。
+   * 声明组件扫描器， 指定@Contorller注解所在的包名：创建配置文件 src/main/resources/springmvc.xml
+        ```xml
+        <?xml version="1.0" encoding="UTF-8"?>
+        <beans xmlns="http://www.springframework.org/schema/beans"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:context="http://www.springframework.org/schema/context"
+            xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
+            <!--  声明组件扫描器  -->
+            <context:component-scan base-package="com.powernode.controller"/>
+        </beans>
+        ```
+   * 声明视图解析器。帮助处理视图的：可以简化第五步处理器方法中指定视图的内容
+     * 将show.jsp放到WEB-INF目录下以防止用户直接访问到
+     * 在springmvc的配置文件springmvc.xml中配置视图解析器：
+        ```xml
+        <!-- 声明springmvc框架中的视图解析器，设置视图文件路径 -->
+        <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+            <!-- 前缀：视图文件路径 -->
+            <property name="prefix" value="/WEB-INF/view/"/>
+            <!-- 后缀：视图文件扩展名 -->
+            <property name="suffix" value=".jsp"/>
+        </bean>
+        ```
+     * 修改控制器方法：
+        ```java
+        // 指定视图
+        modelAndView.setViewName("show");
+        ```
 
+8. 其他内容
+   * 控制器方法可以对应多个url：`@RequestMapping`注解值使用数组
+   * 创建多个控制器方法：
+     * 在控制器类中创建多个方法
+     * 在index.jsp页面中配置访问标签即可
+   * 示例：
+        ```java
+        @Controller
+        public class MyController {
+            @RequestMapping(value = {"/some.do", "/first.do"})
+            public ModelAndView doSome() {
+                ModelAndView modelAndView = new ModelAndView();
+                modelAndView.addObject("msg","欢迎使用springmvc");
+                modelAndView.addObject("fun","执行doSome方法");
+                modelAndView.setViewName("show");
+                return modelAndView;
+            }
 
-
-
-
-
-
-
-
-
-
-
-
+            @RequestMapping(value = {"/other.do", "/second.do"})
+            public ModelAndView doOther(){
+                ModelAndView modelAndView = new ModelAndView();
+                modelAndView.addObject("msg","欢迎使用springmvc");
+                modelAndView.addObject("fun","执行doOther方法");
+                modelAndView.setViewName("show");
+                return modelAndView;
+            }
+        }
+        ```
 
 
