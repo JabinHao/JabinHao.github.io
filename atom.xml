@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-12-13T07:27:32.000Z</updated>
+  <updated>2020-12-15T15:49:49.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,52 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Chapter1</title>
+    <link href="http://example.com/posts/a685019b/"/>
+    <id>http://example.com/posts/a685019b/</id>
+    <published>2020-12-15T15:49:49.000Z</published>
+    <updated>2020-12-15T15:49:49.000Z</updated>
+    
+    
+    <summary type="html">摘要</summary>
+    
+    
+    
+    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="MyBatis" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/MyBatis/"/>
+    
+    
+    <category term="java" scheme="http://example.com/tags/java/"/>
+    
+    <category term="mybatis" scheme="http://example.com/tags/mybatis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Chapter2 SpringMVC注解式开发</title>
+    <link href="http://example.com/posts/ce5530a3/"/>
+    <id>http://example.com/posts/ce5530a3/</id>
+    <published>2020-12-13T08:44:17.000Z</published>
+    <updated>2020-12-13T08:44:17.000Z</updated>
+    
+    
+    <summary type="html">控制器方法的参数与返回值、RequestMapping和RequestParam注解的使用、url-pattern的配置等</summary>
+    
+    
+    
+    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="SpringMVC" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/SpringMVC/"/>
+    
+    
+    <category term="java" scheme="http://example.com/tags/java/"/>
+    
+    <category term="SpringMVC" scheme="http://example.com/tags/SpringMVC/"/>
+    
+  </entry>
   
   <entry>
     <title>Chapter1 SpringMVC概述</title>
@@ -441,60 +487,6 @@
     <category term="xml" scheme="http://example.com/tags/xml/"/>
     
     <category term="前端" scheme="http://example.com/tags/%E5%89%8D%E7%AB%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Chapter4 jQuery</title>
-    <link href="http://example.com/posts/a7952110/"/>
-    <id>http://example.com/posts/a7952110/</id>
-    <published>2020-11-28T15:03:31.000Z</published>
-    <updated>2020-11-29T13:54:31.000Z</updated>
-    
-    
-    <summary type="html">摘要</summary>
-    
-    
-    
-    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="JavaWeb" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/JavaWeb/"/>
-    
-    
-    <category term="java" scheme="http://example.com/tags/java/"/>
-    
-    <category term="JavaWeb" scheme="http://example.com/tags/JavaWeb/"/>
-    
-    <category term="前端" scheme="http://example.com/tags/%E5%89%8D%E7%AB%AF/"/>
-    
-    <category term="JavaScript" scheme="http://example.com/tags/JavaScript/"/>
-    
-    <category term="jQuery" scheme="http://example.com/tags/jQuery/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Chapter3 JavaScript</title>
-    <link href="http://example.com/posts/7ba5e8e6/"/>
-    <id>http://example.com/posts/7ba5e8e6/</id>
-    <published>2020-11-27T12:59:31.000Z</published>
-    <updated>2020-11-29T13:53:31.000Z</updated>
-    
-    
-    <summary type="html">摘要</summary>
-    
-    
-    
-    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="JavaWeb" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/JavaWeb/"/>
-    
-    
-    <category term="java" scheme="http://example.com/tags/java/"/>
-    
-    <category term="JavaWeb" scheme="http://example.com/tags/JavaWeb/"/>
-    
-    <category term="JavaScript" scheme="http://example.com/tags/JavaScript/"/>
     
   </entry>
   
