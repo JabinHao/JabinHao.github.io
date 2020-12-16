@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-12-15T15:49:49.000Z</updated>
+  <updated>2020-12-16T18:11:27.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,57 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Chapter1</title>
+    <title>Chapter3 MyBatis框架Dao代理</title>
+    <link href="http://example.com/posts/9b499888/"/>
+    <id>http://example.com/posts/9b499888/</id>
+    <published>2020-12-16T18:11:27.000Z</published>
+    <updated>2020-12-16T18:11:27.000Z</updated>
+    
+    
+    <summary type="html">摘要</summary>
+    
+    
+    
+    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="MyBatis" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/MyBatis/"/>
+    
+    
+    <category term="java" scheme="http://example.com/tags/java/"/>
+    
+    <category term="mybatis" scheme="http://example.com/tags/mybatis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Chapter1 框架概述</title>
+    <link href="http://example.com/posts/4ddf6c39/"/>
+    <id>http://example.com/posts/4ddf6c39/</id>
+    <published>2020-12-16T16:28:34.000Z</published>
+    <updated>2020-12-16T18:11:27.000Z</updated>
+    
+    
+    <summary type="html">摘要</summary>
+    
+    
+    
+    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="MyBatis" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/MyBatis/"/>
+    
+    
+    <category term="java" scheme="http://example.com/tags/java/"/>
+    
+    <category term="mybatis" scheme="http://example.com/tags/mybatis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Chapter1 框架概述</title>
     <link href="http://example.com/posts/a685019b/"/>
     <id>http://example.com/posts/a685019b/</id>
     <published>2020-12-15T15:49:49.000Z</published>
-    <updated>2020-12-15T15:49:49.000Z</updated>
+    <updated>2020-12-16T16:28:34.000Z</updated>
     
     
     <summary type="html">摘要</summary>
@@ -435,58 +481,6 @@
     <category term="servlet" scheme="http://example.com/tags/servlet/"/>
     
     <category term="http" scheme="http://example.com/tags/http/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Chapter6 Tomcat</title>
-    <link href="http://example.com/posts/4baf78ba/"/>
-    <id>http://example.com/posts/4baf78ba/</id>
-    <published>2020-11-29T13:48:22.000Z</published>
-    <updated>2020-11-29T13:56:22.000Z</updated>
-    
-    
-    <summary type="html">摘要</summary>
-    
-    
-    
-    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="JavaWeb" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/JavaWeb/"/>
-    
-    
-    <category term="java" scheme="http://example.com/tags/java/"/>
-    
-    <category term="JavaWeb" scheme="http://example.com/tags/JavaWeb/"/>
-    
-    <category term="Tomcat" scheme="http://example.com/tags/Tomcat/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Chapter5 XML</title>
-    <link href="http://example.com/posts/3e26f358/"/>
-    <id>http://example.com/posts/3e26f358/</id>
-    <published>2020-11-29T08:28:37.000Z</published>
-    <updated>2020-11-29T13:55:37.000Z</updated>
-    
-    
-    <summary type="html">摘要</summary>
-    
-    
-    
-    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="JavaWeb" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/JavaWeb/"/>
-    
-    
-    <category term="java" scheme="http://example.com/tags/java/"/>
-    
-    <category term="JavaWeb" scheme="http://example.com/tags/JavaWeb/"/>
-    
-    <category term="xml" scheme="http://example.com/tags/xml/"/>
-    
-    <category term="前端" scheme="http://example.com/tags/%E5%89%8D%E7%AB%AF/"/>
     
   </entry>
   
