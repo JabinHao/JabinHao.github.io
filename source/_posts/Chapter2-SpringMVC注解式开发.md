@@ -9,6 +9,7 @@ categories:
   - SpringMVC
 banner_img: /img/dog.png
 index_img: /img/post/springmvc_logo.png
+abbrlink: ce5530a3
 date: 2020-12-13 16:44:17
 updated: 2020-12-13 16:44:17
 subtitle:
