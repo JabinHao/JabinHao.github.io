@@ -40,14 +40,14 @@
   </entry>
   
   <entry>
-    <title>Chapter1 框架概述</title>
+    <title>Chapter2 MyBatis简单使用</title>
     <link href="http://example.com/posts/4ddf6c39/"/>
     <id>http://example.com/posts/4ddf6c39/</id>
     <published>2020-12-16T16:28:34.000Z</published>
     <updated>2020-12-16T18:11:27.000Z</updated>
     
     
-    <summary type="html">摘要</summary>
+    <summary type="html">mybatis主要接口和类、mybatis使用传统Dao开发示例、mybatis动态代理简单介绍</summary>
     
     
     
@@ -70,7 +70,7 @@
     <updated>2020-12-16T16:28:34.000Z</updated>
     
     
-    <summary type="html">摘要</summary>
+    <summary type="html">什么是框架、MyBatis框架简介</summary>
     
     
     
