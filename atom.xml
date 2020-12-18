@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-12-17T15:31:14.000Z</updated>
+  <updated>2020-12-18T09:27:08.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Chapter4 MyBatis框架动态SQL</title>
-    <link href="http://example.com/posts/748b7526/"/>
-    <id>http://example.com/posts/748b7526/</id>
-    <published>2020-12-17T15:31:14.000Z</published>
-    <updated>2020-12-17T15:31:14.000Z</updated>
+    <title>Chapter5 MyBatis配置文件</title>
+    <link href="http://example.com/posts/4d3f287a/"/>
+    <id>http://example.com/posts/4d3f287a/</id>
+    <published>2020-12-18T09:27:08.000Z</published>
+    <updated>2020-12-18T09:27:08.000Z</updated>
     
     
     <summary type="html">摘要</summary>
@@ -30,10 +30,35 @@
     
     <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="框架" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/%E6%A1%86%E6%9E%B6/"/>
+    <category term="MyBatis" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/MyBatis/"/>
     
     
     <category term="java" scheme="http://example.com/tags/java/"/>
+    
+    <category term="mybatis" scheme="http://example.com/tags/mybatis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Chapter4 MyBatis框架动态SQL</title>
+    <link href="http://example.com/posts/748b7526/"/>
+    <id>http://example.com/posts/748b7526/</id>
+    <published>2020-12-17T15:31:14.000Z</published>
+    <updated>2020-12-18T09:25:50.000Z</updated>
+    
+    
+    <summary type="html">摘要</summary>
+    
+    
+    
+    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="MyBatis" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/MyBatis/"/>
+    
+    
+    <category term="java" scheme="http://example.com/tags/java/"/>
+    
+    <category term="mybatis" scheme="http://example.com/tags/mybatis/"/>
     
   </entry>
   
@@ -450,31 +475,6 @@
     <category term="JavaWeb" scheme="http://example.com/tags/JavaWeb/"/>
     
     <category term="Servlet" scheme="http://example.com/tags/Servlet/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Chapter7 Servlet(下)</title>
-    <link href="http://example.com/posts/a207d578/"/>
-    <id>http://example.com/posts/a207d578/</id>
-    <published>2020-12-01T08:17:43.000Z</published>
-    <updated>2020-12-01T08:17:43.000Z</updated>
-    
-    
-    <summary type="html">HttpServletRequest类和HttpServletResponse类的使用</summary>
-    
-    
-    
-    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="JavaWeb" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/JavaWeb/"/>
-    
-    
-    <category term="java" scheme="http://example.com/tags/java/"/>
-    
-    <category term="JavaWeb" scheme="http://example.com/tags/JavaWeb/"/>
-    
-    <category term="servlet" scheme="http://example.com/tags/servlet/"/>
     
   </entry>
   
