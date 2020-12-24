@@ -214,4 +214,27 @@ SpringMVC 也叫 Spring web mvc。是 Spring 框架的一部分，是在 Spring3
         }
         ```
 
+## 1.4 SpringMVC 执行流程
+### 1.4.1 简介
+1. 说明  
+   这部分建议学完springmvc框架后再回来看
+2. 流程图
+   
+    ![图1-1](https://raw.githubusercontent.com/JabinHao/mihs/master/img/springmvc-1-1.png)
+
+### 1.4.2 执行流程简单分析
+1. 用户发起请求 **.do
+2. `DispatcherServlet`接收请求，将请求交给处理器映射器，框架将找到的处理器对象放入处理器执行链中保存
+   * 处理器映射器：springmvc框架中的对象，实现`HandlerMapping`接口的类叫做映射器（有多个）
+   * 作用：根据请求，从springmvc容器对象中获取相应的处理器对象（`ctx.getBean(MyController controller = "some.do")`）
+   * `HandlerExecutionChain`：处理器执行链，保存这=着处理器对象和项目中所有的拦截器（`List<HandlerInterceptor>`）
+3. `DispatcherServlet`将处理器执行链中的处理器对象交给处理器适配器对象
+   * 处理器适配器：springmvc框架中的对象，实现`HandlerAdapter`接口的类叫做适配器（有多个）
+   * 作用：执行处理器方法（`MyController.doSome()`），得到结果并封装到一个对象 `ModelAndView` 中，并将其返回给处理器适配器
+4. `DispatcherServlet`将上一步得到的`ModelAndView`交给视图解析器
+   * 视图解析器：springmvc框架中的对象，实现了`ViewResoler`接口的类（有多个）
+   * 作用：使用前缀、后缀组成视图完整路径，创建View对象
+   * View是一个接口，用于表示视图（视图类：InternalResourceView）
+5. `DispatcherServlet`调用视图(View)对象中的方法，将Model数据放入到request作用域，执行forward，请求接收
+
 
