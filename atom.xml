@@ -67,7 +67,7 @@
   </entry>
   
   <entry>
-    <title>git</title>
+    <title>git笔记</title>
     <link href="http://example.com/posts/518e617c/"/>
     <id>http://example.com/posts/518e617c/</id>
     <published>2020-12-26T19:23:10.000Z</published>
@@ -79,8 +79,6 @@
     
     
     <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="框架" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/%E6%A1%86%E6%9E%B6/"/>
     
     
     <category term="java" scheme="http://example.com/tags/java/"/>
