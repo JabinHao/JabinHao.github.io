@@ -42,31 +42,6 @@
   </entry>
   
   <entry>
-    <title>Chapter5后台管理三 — 菜单维护</title>
-    <link href="http://example.com/posts/358bc598/"/>
-    <id>http://example.com/posts/358bc598/</id>
-    <published>2021-01-06T10:30:44.000Z</published>
-    <updated>2021-01-06T10:30:44.000Z</updated>
-    
-    
-    <summary type="html">摘要</summary>
-    
-    
-    
-    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="项目" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/%E9%A1%B9%E7%9B%AE/"/>
-    
-    <category term="尚筹网" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/%E9%A1%B9%E7%9B%AE/%E5%B0%9A%E7%AD%B9%E7%BD%91/"/>
-    
-    
-    <category term="java" scheme="http://example.com/tags/java/"/>
-    
-    <category term="ssm" scheme="http://example.com/tags/ssm/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Chapter4 后台管理二 — 权限控制</title>
     <link href="http://example.com/posts/f5bc93e0/"/>
     <id>http://example.com/posts/f5bc93e0/</id>
@@ -483,6 +458,31 @@
     <category term="spring" scheme="http://example.com/tags/spring/"/>
     
     <category term="AOP" scheme="http://example.com/tags/AOP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Chapter2 IOC</title>
+    <link href="http://example.com/posts/336b991c/"/>
+    <id>http://example.com/posts/336b991c/</id>
+    <published>2020-12-08T13:21:24.000Z</published>
+    <updated>2020-12-08T13:21:24.000Z</updated>
+    
+    
+    <summary type="html">摘要</summary>
+    
+    
+    
+    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="Spring" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/Spring/"/>
+    
+    
+    <category term="java" scheme="http://example.com/tags/java/"/>
+    
+    <category term="spring" scheme="http://example.com/tags/spring/"/>
+    
+    <category term="IOC" scheme="http://example.com/tags/IOC/"/>
     
   </entry>
   
