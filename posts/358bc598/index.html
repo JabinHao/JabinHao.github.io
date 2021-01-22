@@ -150,7 +150,7 @@
     <span class="token keyword">var</span> result <span class="token operator">=</span> resultEntity<span class="token punctuation">.</span>result<span class="token punctuation">;</span>
     <span class="token comment">// 判断result是否成功</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span>result <span class="token operator">==</span> <span class="token string">"FAILED"</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        layer<span class="token punctuation">.</span><span class="token function">msg</span><span class="token punctuation">(</span>resultEntity<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        layer<span class="token punctuation">.</span><span class="token function">msg</span><span class="token punctuation">(</span>resultEntity<span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
     <span class="token keyword">var</span> pageInfo <span class="token operator">=</span> resultEntity<span class="token punctuation">.</span>data<span class="token punctuation">;</span>
