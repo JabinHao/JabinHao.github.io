@@ -229,7 +229,7 @@ subtitle:
         var result = resultEntity.result;
         // 判断result是否成功
         if (result == "FAILED"){
-            layer.msg(resultEntity);
+            layer.msg(resultEntity.message);
             return null;
         }
         var pageInfo = resultEntity.data;

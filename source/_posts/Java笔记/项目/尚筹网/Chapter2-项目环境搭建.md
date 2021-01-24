@@ -1,6 +1,6 @@
 ---
 title: Chapter2 项目环境搭建
-excerpt: 摘要
+excerpt: SSM开发环境搭建、配置日志系统与异常映射，该部分以发表tag
 tags:
   - java
   - ssm
