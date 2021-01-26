@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-01-24T19:53:10.000Z</updated>
+  <updated>2021-01-26T21:01:11.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,14 +17,39 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Chapter14 — 前台 发起项目</title>
+    <link href="http://example.com/posts/cfd916b7/"/>
+    <id>http://example.com/posts/cfd916b7/</id>
+    <published>2021-01-26T12:12:58.000Z</published>
+    <updated>2021-01-26T21:01:11.000Z</updated>
+    
+    
+    <summary type="html">前台建模、发起众筹项目并保存信息</summary>
+    
+    
+    
+    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="项目" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/%E9%A1%B9%E7%9B%AE/"/>
+    
+    <category term="尚筹网" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/%E9%A1%B9%E7%9B%AE/%E5%B0%9A%E7%AD%B9%E7%BD%91/"/>
+    
+    
+    <category term="java" scheme="http://example.com/tags/java/"/>
+    
+    <category term="ssm" scheme="http://example.com/tags/ssm/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Chapter13 — 前台 登陆延伸</title>
     <link href="http://example.com/posts/6d9ec2ce/"/>
     <id>http://example.com/posts/6d9ec2ce/</id>
     <published>2021-01-24T19:53:10.000Z</published>
-    <updated>2021-01-24T19:53:10.000Z</updated>
+    <updated>2021-01-25T19:34:02.000Z</updated>
     
     
-    <summary type="html">摘要</summary>
+    <summary type="html">Spring Session解决Session共享问题、阿里云OSS、跳转到众筹页面</summary>
     
     
     
@@ -461,29 +486,6 @@
     
     
     <summary type="html">dao动态代理、dao接口方法参数与返回值、mybatis实现模糊查询</summary>
-    
-    
-    
-    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="MyBatis" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/MyBatis/"/>
-    
-    
-    <category term="java" scheme="http://example.com/tags/java/"/>
-    
-    <category term="mybatis" scheme="http://example.com/tags/mybatis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Chapter2 MyBatis简单使用</title>
-    <link href="http://example.com/posts/4ddf6c39/"/>
-    <id>http://example.com/posts/4ddf6c39/</id>
-    <published>2020-12-16T16:28:34.000Z</published>
-    <updated>2020-12-16T18:11:27.000Z</updated>
-    
-    
-    <summary type="html">mybatis主要接口和类、mybatis使用传统Dao开发示例、mybatis动态代理简单介绍</summary>
     
     
     
