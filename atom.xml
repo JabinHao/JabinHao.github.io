@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-01-26T21:01:11.000Z</updated>
+  <updated>2021-01-28T01:18:32.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,56 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Chapter16 — 前台 支付案例</title>
+    <link href="http://example.com/posts/1f72ca5/"/>
+    <id>http://example.com/posts/1f72ca5/</id>
+    <published>2021-01-28T01:18:32.000Z</published>
+    <updated>2021-01-28T01:18:32.000Z</updated>
+    
+    
+    <summary type="html">摘要</summary>
+    
+    
+    
+    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="项目" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/%E9%A1%B9%E7%9B%AE/"/>
+    
+    <category term="尚筹网" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/%E9%A1%B9%E7%9B%AE/%E5%B0%9A%E7%AD%B9%E7%BD%91/"/>
+    
+    
+    <category term="java" scheme="http://example.com/tags/java/"/>
+    
+    <category term="ssm" scheme="http://example.com/tags/ssm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Chapter15 — 前台 展示项目</title>
+    <link href="http://example.com/posts/17dad97d/"/>
+    <id>http://example.com/posts/17dad97d/</id>
+    <published>2021-01-27T15:41:29.000Z</published>
+    <updated>2021-01-27T22:20:35.000Z</updated>
+    
+    
+    <summary type="html">首页显示真实数据、项目详情页</summary>
+    
+    
+    
+    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="项目" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/%E9%A1%B9%E7%9B%AE/"/>
+    
+    <category term="尚筹网" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/%E9%A1%B9%E7%9B%AE/%E5%B0%9A%E7%AD%B9%E7%BD%91/"/>
+    
+    
+    <category term="java" scheme="http://example.com/tags/java/"/>
+    
+    <category term="ssm" scheme="http://example.com/tags/ssm/"/>
+    
+  </entry>
   
   <entry>
     <title>Chapter14 — 前台 发起项目</title>
@@ -440,52 +490,6 @@
     
     
     <summary type="html">mybatis主配置文件的设置，包括数据源dataSource、事务、别名等，翻页工具PageHelper</summary>
-    
-    
-    
-    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="MyBatis" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/MyBatis/"/>
-    
-    
-    <category term="java" scheme="http://example.com/tags/java/"/>
-    
-    <category term="mybatis" scheme="http://example.com/tags/mybatis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Chapter4 MyBatis框架动态SQL</title>
-    <link href="http://example.com/posts/748b7526/"/>
-    <id>http://example.com/posts/748b7526/</id>
-    <published>2020-12-17T15:31:14.000Z</published>
-    <updated>2020-12-18T09:25:50.000Z</updated>
-    
-    
-    <summary type="html">动态sql的使用，if、where、foreach标签，代码片段等</summary>
-    
-    
-    
-    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="MyBatis" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/MyBatis/"/>
-    
-    
-    <category term="java" scheme="http://example.com/tags/java/"/>
-    
-    <category term="mybatis" scheme="http://example.com/tags/mybatis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Chapter3 MyBatis框架Dao代理</title>
-    <link href="http://example.com/posts/9b499888/"/>
-    <id>http://example.com/posts/9b499888/</id>
-    <published>2020-12-16T18:11:27.000Z</published>
-    <updated>2020-12-16T18:11:27.000Z</updated>
-    
-    
-    <summary type="html">dao动态代理、dao接口方法参数与返回值、mybatis实现模糊查询</summary>
     
     
     
