@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-01-28T01:18:32.000Z</updated>
+  <updated>2021-01-29T17:14:38.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,14 +17,39 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Chapter16 — 前台 支付案例</title>
+    <title>Chapter17 — 前台 支付</title>
+    <link href="http://example.com/posts/4b38d148/"/>
+    <id>http://example.com/posts/4b38d148/</id>
+    <published>2021-01-28T17:02:06.000Z</published>
+    <updated>2021-01-29T17:14:38.000Z</updated>
+    
+    
+    <summary type="html">实现订单支付功能，将订单信息保存到数据库</summary>
+    
+    
+    
+    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="项目" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/%E9%A1%B9%E7%9B%AE/"/>
+    
+    <category term="尚筹网" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/%E9%A1%B9%E7%9B%AE/%E5%B0%9A%E7%AD%B9%E7%BD%91/"/>
+    
+    
+    <category term="java" scheme="http://example.com/tags/java/"/>
+    
+    <category term="ssm" scheme="http://example.com/tags/ssm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Chapter16 — 前台 订单</title>
     <link href="http://example.com/posts/1f72ca5/"/>
     <id>http://example.com/posts/1f72ca5/</id>
     <published>2021-01-28T01:18:32.000Z</published>
-    <updated>2021-01-28T01:18:32.000Z</updated>
+    <updated>2021-01-28T15:57:44.000Z</updated>
     
     
-    <summary type="html">摘要</summary>
+    <summary type="html">项目支持页面，创建支持订单，保存收货地址</summary>
     
     
     
@@ -478,29 +503,6 @@
     <category term="java" scheme="http://example.com/tags/java/"/>
     
     <category term="ssm" scheme="http://example.com/tags/ssm/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Chapter5 MyBatis配置文件</title>
-    <link href="http://example.com/posts/4d3f287a/"/>
-    <id>http://example.com/posts/4d3f287a/</id>
-    <published>2020-12-18T09:27:08.000Z</published>
-    <updated>2020-12-18T15:42:17.000Z</updated>
-    
-    
-    <summary type="html">mybatis主配置文件的设置，包括数据源dataSource、事务、别名等，翻页工具PageHelper</summary>
-    
-    
-    
-    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="MyBatis" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/MyBatis/"/>
-    
-    
-    <category term="java" scheme="http://example.com/tags/java/"/>
-    
-    <category term="mybatis" scheme="http://example.com/tags/mybatis/"/>
     
   </entry>
   
