@@ -8,14 +8,14 @@
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.session<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-session-data-redis<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span></code></pre></li><li><p>配置文件</p><pre class="language-yml" data-language="yml"><code class="language-yml">spring:
-  redis:
-    host: 54.238.21.82
-    jedis:
-      pool:
-        max-idle: 100
-  session:
-    store-type: redis</code></pre></li></ul></li></ol><h2 id="13-2-登录检查"><a href="#13-2-登录检查" class="headerlink" title="13.2 登录检查"></a>13.2 登录检查</h2><h3 id="13-2-1-目标思路"><a href="#13-2-1-目标思路" class="headerlink" title="13.2.1 目标思路"></a>13.2.1 目标思路</h3><ol><li><p>目标<br>把项目中必须登录才能访问的功能保护起来， 如果没有登录就访问则跳转到登录页面</p></li><li><p>思路</p><p><img src="https://raw.githubusercontent.com/JabinHao/mihs/master/blog/crowd_funding/13-2-1.png" srcset="/img/loading.gif" alt="思路"></p></li></ol><h3 id="13-2-2-设置Session共享"><a href="#13-2-2-设置Session共享" class="headerlink" title="13.2.2 设置Session共享"></a>13.2.2 设置Session共享</h3><ol><li><p>zuul工程加入依赖</p><pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token comment">&lt;!-- 引入 springboot&amp;redis 整合场景 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span></code></pre></li><li><p>配置文件</p><pre class="language-yml" data-language="yml"><code class="language-yml"><span class="token key atrule">spring</span><span class="token punctuation">:</span>
+  <span class="token key atrule">redis</span><span class="token punctuation">:</span>
+    <span class="token key atrule">host</span><span class="token punctuation">:</span> 54.238.21.82
+    <span class="token key atrule">jedis</span><span class="token punctuation">:</span>
+      <span class="token key atrule">pool</span><span class="token punctuation">:</span>
+        <span class="token key atrule">max-idle</span><span class="token punctuation">:</span> <span class="token number">100</span>
+  <span class="token key atrule">session</span><span class="token punctuation">:</span>
+    <span class="token key atrule">store-type</span><span class="token punctuation">:</span> redis</code></pre></li></ul></li></ol><h2 id="13-2-登录检查"><a href="#13-2-登录检查" class="headerlink" title="13.2 登录检查"></a>13.2 登录检查</h2><h3 id="13-2-1-目标思路"><a href="#13-2-1-目标思路" class="headerlink" title="13.2.1 目标思路"></a>13.2.1 目标思路</h3><ol><li><p>目标<br>把项目中必须登录才能访问的功能保护起来， 如果没有登录就访问则跳转到登录页面</p></li><li><p>思路</p><p><img src="https://raw.githubusercontent.com/JabinHao/mihs/master/blog/crowd_funding/13-2-1.png" srcset="/img/loading.gif" alt="思路"></p></li></ol><h3 id="13-2-2-设置Session共享"><a href="#13-2-2-设置Session共享" class="headerlink" title="13.2.2 设置Session共享"></a>13.2.2 设置Session共享</h3><ol><li><p>zuul工程加入依赖</p><pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token comment">&lt;!-- 引入 springboot&amp;redis 整合场景 --></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-data-redis<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
@@ -24,13 +24,13 @@
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.session<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-session-data-redis<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span></code></pre></li><li><p>配置文件</p><pre class="language-yml" data-language="yml"><code class="language-yml">spring:
-  application:
-    name: atguigu-crowd-zuul
-  redis:
-    host: 54.238.**.**
-  session:
-    store-type: redis</code></pre></li><li><p>auth工程</p><ul><li>依赖：同上</li><li>配置：同上</li></ul></li></ol><h3 id="13-2-3-不需要登录检查的资源"><a href="#13-2-3-不需要登录检查的资源" class="headerlink" title="13.2.3 不需要登录检查的资源"></a>13.2.3 不需要登录检查的资源</h3><ol><li><p>util模块新建常量类</p><pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AccessPassResources</span> <span class="token punctuation">&#123;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span></code></pre></li><li><p>配置文件</p><pre class="language-yml" data-language="yml"><code class="language-yml"><span class="token key atrule">spring</span><span class="token punctuation">:</span>
+  <span class="token key atrule">application</span><span class="token punctuation">:</span>
+    <span class="token key atrule">name</span><span class="token punctuation">:</span> atguigu<span class="token punctuation">-</span>crowd<span class="token punctuation">-</span>zuul
+  <span class="token key atrule">redis</span><span class="token punctuation">:</span>
+    <span class="token key atrule">host</span><span class="token punctuation">:</span> 54.238.<span class="token important">**.**</span>
+  <span class="token key atrule">session</span><span class="token punctuation">:</span>
+    <span class="token key atrule">store-type</span><span class="token punctuation">:</span> redis</code></pre></li><li><p>auth工程</p><ul><li>依赖：同上</li><li>配置：同上</li></ul></li></ol><h3 id="13-2-3-不需要登录检查的资源"><a href="#13-2-3-不需要登录检查的资源" class="headerlink" title="13.2.3 不需要登录检查的资源"></a>13.2.3 不需要登录检查的资源</h3><ol><li><p>util模块新建常量类</p><pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AccessPassResources</span> <span class="token punctuation">&#123;</span>
   
     <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> PASS_RES_SET <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   
@@ -159,10 +159,10 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>com.atguigu.crowd<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>atcrowdfunding09-member-entity<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.0-SNAPSHOT<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span></code></pre></li></ol><h3 id="13-3-2-项目运行时出错"><a href="#13-3-2-项目运行时出错" class="headerlink" title="13.3.2 项目运行时出错"></a>13.3.2 项目运行时出错</h3><ol><li><p>超时错误：修改配置文件</p><pre class="language-yml" data-language="yml"><code class="language-yml"># 要加在eureka之前，几个工程都要加
-ribbon:
-  ReadTimeout: 60000
-  ConnectTimeout: 60000</code></pre></li><li><p>找不到username：重定向问题</p><ul><li><p>问题描述：<a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000</a> 与 <a target="_blank" rel="noopener" href="http://loclahost/">http://loclahost:80</a> 是两个不同网站， 浏览器工作时不会使用相同的 Cookie</p></li><li><p>解决：修改MemberHandler类doLogin方法</p><pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">return</span> <span class="token string">"redirect:http://www.crowd.com/auth/member/to/center/page"</span><span class="token punctuation">;</span></code></pre></li></ul></li><li><p>序列化出错：</p><ul><li><p>Spring Session要求对象支持序列化</p></li><li><p>修改 MemberLoginVO</p><pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MemberLoginVO</span> <span class="token keyword">implements</span> <span class="token class-name">Serializable</span> <span class="token punctuation">&#123;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span></code></pre></li></ol><h3 id="13-3-2-项目运行时出错"><a href="#13-3-2-项目运行时出错" class="headerlink" title="13.3.2 项目运行时出错"></a>13.3.2 项目运行时出错</h3><ol><li><p>超时错误：修改配置文件</p><pre class="language-yml" data-language="yml"><code class="language-yml"><span class="token comment"># 要加在eureka之前，几个工程都要加</span>
+<span class="token key atrule">ribbon</span><span class="token punctuation">:</span>
+  <span class="token key atrule">ReadTimeout</span><span class="token punctuation">:</span> <span class="token number">60000</span>
+  <span class="token key atrule">ConnectTimeout</span><span class="token punctuation">:</span> <span class="token number">60000</span></code></pre></li><li><p>找不到username：重定向问题</p><ul><li><p>问题描述：<a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000</a> 与 <a target="_blank" rel="noopener" href="http://loclahost/">http://loclahost:80</a> 是两个不同网站， 浏览器工作时不会使用相同的 Cookie</p></li><li><p>解决：修改MemberHandler类doLogin方法</p><pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">return</span> <span class="token string">"redirect:http://www.crowd.com/auth/member/to/center/page"</span><span class="token punctuation">;</span></code></pre></li></ul></li><li><p>序列化出错：</p><ul><li><p>Spring Session要求对象支持序列化</p></li><li><p>修改 MemberLoginVO</p><pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MemberLoginVO</span> <span class="token keyword">implements</span> <span class="token class-name">Serializable</span> <span class="token punctuation">&#123;</span>
 
     <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> serialVersionUID <span class="token operator">=</span> <span class="token number">1L</span><span class="token punctuation">;</span></code></pre></li></ul></li></ol><h2 id="13-4-阿里云的-OSS-对象存储"><a href="#13-4-阿里云的-OSS-对象存储" class="headerlink" title="13.4 阿里云的 OSS 对象存储"></a>13.4 阿里云的 OSS 对象存储</h2><h3 id="13-4-1-问题引入"><a href="#13-4-1-问题引入" class="headerlink" title="13.4.1 问题引入"></a>13.4.1 问题引入</h3><ol><li><p>文件上传保存位置：保存在应用中特定目录下</p><p><img src="https://raw.githubusercontent.com/JabinHao/mihs/master/blog/crowd_funding/13-4-1.png" srcset="/img/loading.gif" alt="文件保存位置"></p></li><li><p>问题</p><ul><li>Web 应用重新部署导致文件丢失</li><li>集群环境下文件难以同步：分布式环境有多个Tomcat服务器</li><li>文件数量太大时，影响 Tomcat 的运行效率</li><li>服务器扩容：手动对服务器进行扩容， 有可能导致项目中其他地方需要进行连带修改</li></ul></li></ol><h3 id="13-4-2-解决方案"><a href="#13-4-2-解决方案" class="headerlink" title="13.4.2 解决方案"></a>13.4.2 解决方案</h3><ol><li>自己搭建文件服务器<ul><li>举例： FastDFS</li><li>好处： 服务器可以自己维护、 自己定制。</li><li>缺点： 需要投入的人力、 物力更多。</li><li>适用： 规模比较大的项目， 要存储海量的文件</li></ul></li><li>使用第三方云服务<ul><li>举例： 阿里云提供的 OSS 对象存储服务。</li><li>好处： 不必自己维护服务器的软硬件资源。 直接调用相关 API即可操作， 更加<br>轻量级。</li><li>缺点： 数据不在自己手里。 服务器不由自己维护。</li><li>适用： 较小规模的应用， 文件数据不是绝对私密</li></ul></li></ol><h3 id="13-4-3-开通-OSS-服务"><a href="#13-4-3-开通-OSS-服务" class="headerlink" title="13.4.3 开通 OSS 服务"></a>13.4.3 开通 OSS 服务</h3><ol><li><p>project模块依赖</p><pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>com.atguigu.crowd<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
@@ -213,32 +213,32 @@ ribbon:
     <span class="token keyword">private</span> <span class="token class-name">String</span> accessKeyId<span class="token punctuation">;</span>
     <span class="token keyword">private</span> <span class="token class-name">String</span> accessKeySecret<span class="token punctuation">;</span>
     <span class="token keyword">private</span> <span class="token class-name">String</span> bucketDomain<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span></code></pre></li><li><p>配置文件</p><pre class="language-yml" data-language="yml"><code class="language-yml">server:
-port: 5000
+<span class="token punctuation">&#125;</span></code></pre></li><li><p>配置文件</p><pre class="language-yml" data-language="yml"><code class="language-yml"><span class="token key atrule">server</span><span class="token punctuation">:</span>
+<span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">5000</span>
 
-spring:
-application:
-    name: atguigu-crowd-project
-thymeleaf:
-    prefix: classpath:&#x2F;templates&#x2F;
-    suffix: .html
-redis:
-    host: 54.238.77.83
-session:
-    store-type: redis
+<span class="token key atrule">spring</span><span class="token punctuation">:</span>
+<span class="token key atrule">application</span><span class="token punctuation">:</span>
+    <span class="token key atrule">name</span><span class="token punctuation">:</span> atguigu<span class="token punctuation">-</span>crowd<span class="token punctuation">-</span>project
+<span class="token key atrule">thymeleaf</span><span class="token punctuation">:</span>
+    <span class="token key atrule">prefix</span><span class="token punctuation">:</span> classpath<span class="token punctuation">:</span>/templates/
+    <span class="token key atrule">suffix</span><span class="token punctuation">:</span> .html
+<span class="token key atrule">redis</span><span class="token punctuation">:</span>
+    <span class="token key atrule">host</span><span class="token punctuation">:</span> 54.238.77.83
+<span class="token key atrule">session</span><span class="token punctuation">:</span>
+    <span class="token key atrule">store-type</span><span class="token punctuation">:</span> redis
 
-eureka:
-client:
-    service-url:
-    defaultZone: http:&#x2F;&#x2F;localhost:1000&#x2F;eureka
+<span class="token key atrule">eureka</span><span class="token punctuation">:</span>
+<span class="token key atrule">client</span><span class="token punctuation">:</span>
+    <span class="token key atrule">service-url</span><span class="token punctuation">:</span>
+    <span class="token key atrule">defaultZone</span><span class="token punctuation">:</span> http<span class="token punctuation">:</span>//localhost<span class="token punctuation">:</span>1000/eureka
 
-aliyun:
-oss:
-    access-key-id: LTAI4GKG7FA4YiMvyP1PdtQm
-    access-key-secret: PAf8u1Tmsltm7edDkvwUTIq4RcQaux
-    bucket-domain: http:&#x2F;&#x2F;atguigu20210126.oss-cn-hangzhou.aliyuncs.com
-    bucket-name: atguigu20210126
-    end-point: http:&#x2F;&#x2F;oss-cn-hangzhou.aliyuncs.com</code></pre></li></ol><h3 id="13-4-4-util模块"><a href="#13-4-4-util模块" class="headerlink" title="13.4.4 util模块"></a>13.4.4 util模块</h3><ol><li><p>依赖</p><pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+<span class="token key atrule">aliyun</span><span class="token punctuation">:</span>
+<span class="token key atrule">oss</span><span class="token punctuation">:</span>
+    <span class="token key atrule">access-key-id</span><span class="token punctuation">:</span> LTAI4GKG7FA4YiMvyP1PdtQm
+    <span class="token key atrule">access-key-secret</span><span class="token punctuation">:</span> PAf8u1Tmsltm7edDkvwUTIq4RcQaux
+    <span class="token key atrule">bucket-domain</span><span class="token punctuation">:</span> http<span class="token punctuation">:</span>//atguigu20210126.oss<span class="token punctuation">-</span>cn<span class="token punctuation">-</span>hangzhou.aliyuncs.com
+    <span class="token key atrule">bucket-name</span><span class="token punctuation">:</span> atguigu20210126
+    <span class="token key atrule">end-point</span><span class="token punctuation">:</span> http<span class="token punctuation">:</span>//oss<span class="token punctuation">-</span>cn<span class="token punctuation">-</span>hangzhou.aliyuncs.com</code></pre></li></ol><h3 id="13-4-4-util模块"><a href="#13-4-4-util模块" class="headerlink" title="13.4.4 util模块"></a>13.4.4 util模块</h3><ol><li><p>依赖</p><pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>com.aliyun.oss<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>aliyun-sdk-oss<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>3.10.2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>

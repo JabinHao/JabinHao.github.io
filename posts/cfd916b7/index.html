@@ -224,16 +224,16 @@
         registry<span class="token punctuation">.</span><span class="token function">addViewController</span><span class="token punctuation">(</span><span class="token string">"/launch/project/page"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setViewName</span><span class="token punctuation">(</span><span class="token string">"project-launch"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         registry<span class="token punctuation">.</span><span class="token function">addViewController</span><span class="token punctuation">(</span><span class="token string">"/return/info/page"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setViewName</span><span class="token punctuation">(</span><span class="token string">"project-return"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span></code></pre></li><li><p>修改 zuul 模块配置</p><pre class="language-yml" data-language="yml"><code class="language-yml">zuul:
-ignored-services: &quot;*&quot;
-sensitive-headers: &quot;*&quot;
-routes:
-    crowd-portal:
-    service-id: atguigu-crowd-auth
-    path: &#x2F;**
-    crowd-project:
-    service-id: atguigu-crowd-project
-    path: &#x2F;project&#x2F;**</code></pre></li><li><p>handler</p><pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Controller</span>
+<span class="token punctuation">&#125;</span></code></pre></li><li><p>修改 zuul 模块配置</p><pre class="language-yml" data-language="yml"><code class="language-yml"><span class="token key atrule">zuul</span><span class="token punctuation">:</span>
+<span class="token key atrule">ignored-services</span><span class="token punctuation">:</span> <span class="token string">"*"</span>
+<span class="token key atrule">sensitive-headers</span><span class="token punctuation">:</span> <span class="token string">"*"</span>
+<span class="token key atrule">routes</span><span class="token punctuation">:</span>
+    <span class="token key atrule">crowd-portal</span><span class="token punctuation">:</span>
+    <span class="token key atrule">service-id</span><span class="token punctuation">:</span> atguigu<span class="token punctuation">-</span>crowd<span class="token punctuation">-</span>auth
+    <span class="token key atrule">path</span><span class="token punctuation">:</span> /<span class="token important">**</span>
+    <span class="token key atrule">crowd-project</span><span class="token punctuation">:</span>
+    <span class="token key atrule">service-id</span><span class="token punctuation">:</span> atguigu<span class="token punctuation">-</span>crowd<span class="token punctuation">-</span>project
+    <span class="token key atrule">path</span><span class="token punctuation">:</span> /project/<span class="token important">**</span></code></pre></li><li><p>handler</p><pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Controller</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ProjectConsumerHandler</span> <span class="token punctuation">&#123;</span>
 
     <span class="token annotation punctuation">@Autowired</span>
