@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-02-07T18:11:29.000Z</updated>
+  <updated>2021-02-20T18:43:21.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,48 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Chapter5 MySQL主从复制</title>
+    <link href="http://example.com/posts/ea6c32d9/"/>
+    <id>http://example.com/posts/ea6c32d9/</id>
+    <published>2021-02-20T16:48:55.000Z</published>
+    <updated>2021-02-20T18:43:21.000Z</updated>
+    
+    
+    <summary type="html">MySQL主从复制原理、配置</summary>
+    
+    
+    
+    <category term="MySQL" scheme="http://example.com/categories/MySQL/"/>
+    
+    <category term="MySQL高级" scheme="http://example.com/categories/MySQL/MySQL%E9%AB%98%E7%BA%A7/"/>
+    
+    
+    <category term="mysql" scheme="http://example.com/tags/mysql/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Chapter4 MySQL锁机制</title>
+    <link href="http://example.com/posts/30c53523/"/>
+    <id>http://example.com/posts/30c53523/</id>
+    <published>2021-02-13T18:09:27.000Z</published>
+    <updated>2021-02-20T15:58:38.000Z</updated>
+    
+    
+    <summary type="html">MySQL行锁、表锁使用</summary>
+    
+    
+    
+    <category term="MySQL" scheme="http://example.com/categories/MySQL/"/>
+    
+    <category term="MySQL高级" scheme="http://example.com/categories/MySQL/MySQL%E9%AB%98%E7%BA%A7/"/>
+    
+    
+    <category term="mysql" scheme="http://example.com/tags/mysql/"/>
+    
+  </entry>
   
   <entry>
     <title>Chapter3 查询截取分析</title>
@@ -396,56 +438,6 @@
     
     
     <summary type="html">SpringCloud环境搭建、Eureka注册中心、Feign、Hystrix、Zuul</summary>
-    
-    
-    
-    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="项目" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/%E9%A1%B9%E7%9B%AE/"/>
-    
-    <category term="尚筹网" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/%E9%A1%B9%E7%9B%AE/%E5%B0%9A%E7%AD%B9%E7%BD%91/"/>
-    
-    
-    <category term="java" scheme="http://example.com/tags/java/"/>
-    
-    <category term="ssm" scheme="http://example.com/tags/ssm/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Chapter9分布式 — SpringBoot快速入门</title>
-    <link href="http://example.com/posts/2582c489/"/>
-    <id>http://example.com/posts/2582c489/</id>
-    <published>2021-01-14T14:12:26.000Z</published>
-    <updated>2021-01-15T13:54:24.000Z</updated>
-    
-    
-    <summary type="html">SpringBoot环境搭建、整合Mybatis、Redis、Thymeleaf</summary>
-    
-    
-    
-    <category term="Java笔记" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/"/>
-    
-    <category term="项目" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/%E9%A1%B9%E7%9B%AE/"/>
-    
-    <category term="尚筹网" scheme="http://example.com/categories/Java%E7%AC%94%E8%AE%B0/%E9%A1%B9%E7%9B%AE/%E5%B0%9A%E7%AD%B9%E7%BD%91/"/>
-    
-    
-    <category term="java" scheme="http://example.com/tags/java/"/>
-    
-    <category term="ssm" scheme="http://example.com/tags/ssm/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Chapter8后台管理 — 权限控制</title>
-    <link href="http://example.com/posts/8eace87f/"/>
-    <id>http://example.com/posts/8eace87f/</id>
-    <published>2021-01-12T08:50:19.000Z</published>
-    <updated>2021-01-13T17:40:19.000Z</updated>
-    
-    
-    <summary type="html">通过SpringSecurity进行权限控制</summary>
     
     
     
