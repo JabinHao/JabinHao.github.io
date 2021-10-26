@@ -6,7 +6,7 @@ tags:
   - juc
 categories:
   - Java笔记
-  - juc
+  - JUC
 banner_img: /img/dog.png
 index_img: /img/post/Java/java_logo.png
 abbrlink: fe7f18c4
@@ -111,6 +111,8 @@ subtitle:
         this.threadFactory = threadFactory;
         this.handler = handler;
     }
+    ```
+
 2. 参数
    1. `corePoolSize`：线程池中的常驻核心线程数
    2. `maximumPoolSize`：线程池中能够容纳同时执行的最大线程数，此值必须大于等于1
@@ -160,7 +162,7 @@ subtitle:
     * 这里使用了默认的 `AbortPolicy()` 策略，总任务数为10，而允许的最大任务数 = `maximumPoolSize`(5) + `workQueue`(3) = 8，所以会抛出RejectedExecutionException异常
     * 若使用`CallerRunsPolicy()` 策略，则会执行8个任务，将剩下的两个退回给main线程（也有可能处理较快，处理了9个，main只处理了一个）
     * 若使用`DiscardOldestPolicy()`策略，则会抛弃两个时间最长的
-    * 若使用`DiscardOldestPolicy()`策略，则会抛弃两个
+    * 若使用`DiscardPolicy()`策略，则会抛弃两个
 3. 在工作中如何使用线程池，是否自定义过线程池
    * 获取电脑核数：`Runtime.getRuntime().availableProcessors()`
    * CPU密集型任务：最大线程数(maximumPoolSize)=CPU核心数+1

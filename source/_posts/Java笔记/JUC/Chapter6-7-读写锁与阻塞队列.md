@@ -6,7 +6,7 @@ tags:
   - juc
 categories:
   - Java笔记
-  - juc
+  - JUC
 banner_img: /img/dog.png
 index_img: /img/post/Java/java_logo.png
 abbrlink: 2ada5ae

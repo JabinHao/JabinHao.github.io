@@ -3,12 +3,12 @@ title: Chapter3 数据定义语言(DDL)
 excerpt: 库和表的管理（增删改）、常见数据类型、常见约束
 tags:
   - mysql
-  - java
 categories:
-  - mysql
+  - MySQL
+  - MySQL基础
 banner_img: /img/road.png
 index_img: /img/post/Mysql/mysql_logo.svg
-abbrlink: '1e718408'
+abbrlink: a526b75
 date: 2020-11-12 23:44:33
 updated: 2020-11-12 23:44:33
 subtitle:

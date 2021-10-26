@@ -3,9 +3,9 @@ title: Chapter4 事务控制语句(TCL)
 excerpt: 事务控制语句、视图、变量、存储过程、函数、流程控制结构
 tags:
   - mysql
-  - java
 categories:
-  - mysql
+  - MySQL
+  - MySQL基础
 banner_img: /img/road.png
 index_img: /img/post/Mysql/mysql_logo.svg
 abbrlink: 2ac0582e
@@ -73,7 +73,7 @@ TCL即 Transaction Control Language 事务控制语言
    * mysql中默认 第三个隔离级别 repeatable read
    * oracle中默认第二个隔离级别 read committed
 4. 常用命令
-   * `select @@tx_isolation;`：查看隔离级别
+   * `select @@tx_isolation;`：查看隔离级别 (在MySQL8中，tx_isolation变量已修改为transaction_isolation)
    * `set session|global transaction isolation level 隔离级别;`：设置隔离级别
 
 # Chapter5 视图
