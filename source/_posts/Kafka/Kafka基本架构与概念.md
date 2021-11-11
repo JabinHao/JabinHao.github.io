@@ -1,13 +1,14 @@
 ---
 title: Kafka基本架构与概念
-excerpt: 摘要
+excerpt: Kafka 架构与概念、工作模式
 tags:
   - Kafka
 categories:
   - Kafka
-banner_img: /img/banner/jyanme.png
+banner_img: /img/banner/kafka.png
 index_img: /img/index/kafka.png
 category: Kafka
+abbrlink: 352a98e6
 date: 2021-10-26 23:53:43
 updated: 2021-10-26 23:53:43
 subtitle:
@@ -27,6 +28,7 @@ subtitle:
     * 事件流的发布和订阅
     * 按照记录的生成顺序高效地存储记录流
     * 实时处理记录流
+
 2. Kalfka 所有功能都以分布式、高度可扩展、弹性、容错和安全的方式提供的。 Kafka 可以部署在裸机硬件、虚拟机和容器上，也可以部署在本地和云端。
 
 ### 1.3 Kafka 如何工作
@@ -34,6 +36,7 @@ subtitle:
 2. 服务器：
    * 以集群形式运行（由一个或多个服务器组成）
    * Kafka集群具有很强的扩展性与容错性，一个或多个服务器故障后，会有其他服务器接管其工作
+
 3. 客户端
    * 在分布式或微服务应用中，通过客户端操作事件流
    * 支持Java、Scala，也支持Go、Python等其他语言以及 REST API
@@ -46,6 +49,7 @@ subtitle:
 2. 队列
     * 也叫点对点
     * 消息持久化到一个队列中，有一个或多个消费者消费队列中的数据，但是一条消息只能被消费一次
+
 3. 发布订阅
    * 消息被持久化到一个topic中，消费者可以订阅一个或多个topic，消费者可以消费该topic中所有的数据
    * 同一条数据可以被多个消费者消费，数据被消费后不会立马删除
@@ -63,18 +67,23 @@ subtitle:
 
 1. Producer: 生产者
     * 消息生产者，即向 kafka broker 发消息的客户端
+
 2. Consumer: 消费者
     * 消息消费者，向kafka broker取消息的客户端
     * CG：Consumer Group即消费组，广播需要每个consumer有一个独立的CG。单播则要所有的consumer在同一个CG
+
 3. Topic：主题
     * 发布-订阅中的topic， 消费组根据 topic 消费消息
+
 4. Partition：分区
     * topic中的数据分割为一个或多个partition。每个topic至少有一个partition。
     * 每个partition中的数据使用多个segment文件存储。partition中的数据是有序的，但多个partition之间无法保证顺序。
     * 在需要严格保证消息的消费顺序的场景下，需要将partition数目设为1
+
 5. Broker
     * 一台kafka服务器就是一个broker。
     * 一个集群由多个broker组成。一个broker可以容纳多个topic
+
 6. Offset
     * 每条消息都有一个当前Partition下唯一的64字节的offset，它指明了这条消息的起始位置
 
@@ -111,10 +120,11 @@ subtitle:
     协议 | TCP | 高级消息收发队列协议 (AMQP) 及通过插件获得的支持：MQTT、STOMP
     ...
 
+### 3.2 分区算法
 
-### 3.2 
-
-1. 
+1. 将所有 broker (n个) 和 待分配 partition 排序
+2. 将第 i 个 partition 分配到第 (`i % n`) 个broker上
+3. 将第 i 个 partition 的第 j 个 replica 分配到第 `(i + j) % n` 个 broker 上
 
 ## Reference
 1. [apache Kafka](https://kafka.apache.org/)
