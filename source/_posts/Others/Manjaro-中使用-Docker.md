@@ -8,6 +8,7 @@ categories:
 banner_img: /img/banner/catiger.png
 index_img: /img/index/code.jpg
 category: Others
+abbrlink: 8caf1d98
 date: 2021-11-02 22:05:18
 updated: 2021-11-02 22:05:18
 subtitle:
