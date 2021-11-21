@@ -1,5 +1,5 @@
 ---
-title: Kafka简单使用
+title: Kafka简单使用(1)
 excerpt: 通过 docker-compose 搭建 Kafka 集群，在 Spring Boot 中使用 Kafka
 tags:
   - kafka
@@ -206,6 +206,11 @@ subtitle:
 
     127.0.0.1 kafka3
     ```
+    也可以将docker-compose-kafka.yml中
+    ```yml
+    KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9092
+    ```
+    中的 kafka1、kafka2、kafka3 替换为宿主机 ip
 
 2. 查看容器的网络信息
 
@@ -246,7 +251,31 @@ subtitle:
         value-serializer: org.apache.kafka.common.serialization.StringSerializer
     ```
 
-3. 项目源码
+3. 手动提交
+
+    ```yml
+    consumer:
+      enable-auto-commit: false
+    ```
+    手动提交时 `ack-mode` 设置
+    ```yml
+    kafka:
+        listener:
+        ack-mode: manual
+    ```
+
+    ackMode | 说明
+    :-:|:-
+    MANUAL | 当每一批poll()的数据被消费者监听器（ListenerConsumer）处理之后, 手动调用 Acknowledgment.acknowledge() 后提交
+    MANUAL_IMMEDIATE | 手动调用 Acknowledgment.acknowledge() 后立即提交
+    RECORD | 当每一条记录被消费者监听器（ListenerConsumer）处理之后提交
+    BATCH(默认) | 当每一批poll()的数据被消费者监听器（ListenerConsumer）处理之后提交
+    TIME | 当每一批poll()的数据被消费者监听器（ListenerConsumer）处理之后，距离上次提交时间大于TIME时提交
+    COUNT | 当每一批poll()的数据被消费者监听器（ListenerConsumer）处理之后，被处理record数量大于等于COUNT时提交
+    COUNT_TIME | TIME或COUNT　有一个条件满足时提交
+
+
+4. 项目源码
 
     [github](https://github.com/JabinHao/spring-boot-demo)
 
@@ -294,6 +323,22 @@ subtitle:
     }
     ```
 
+4. 设置消费组、多topic、指定分区、指定偏移量消费及设置消费者个数
+   
+    ```java
+    @KafkaListener(groupId = "group_id", topicPartitions = {
+            @TopicPartition(topic = "topic1", partitions = {"0", "1"}),
+            @TopicPartition(topic = "topic2", partitions = "0",
+                    partitionOffsets = @PartitionOffset(partition = "1", initialOffset = "100"))
+    },concurrency = "3")//concurrency就是同组下的消费者个数，就是并发消费数, 建议⼩于等于分区总数
+    public void listenGroup(ConsumerRecord<String, String> record, Acknowledgment ack) {
+        String value = record.value();
+        System.out.println(value);
+        System.out.println(record);
+        //⼿动提交offset
+        ack.acknowledge();
+    }
+    ```
 
 ## Reference
 

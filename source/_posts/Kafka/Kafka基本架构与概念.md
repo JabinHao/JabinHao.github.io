@@ -104,7 +104,8 @@ subtitle:
 
     * 消费组作为一个整体按照 发布-订阅消息模型 来消费消息
     * 同一个消费组的内部，消费者按照消息队列模型来消费消息
-   
+
+
 ## 3. 其它
 
 ### 3.1 Kafka 与 RabbitMQ
@@ -121,10 +122,42 @@ subtitle:
     ...
 
 ### 3.2 分区算法
-
 1. 将所有 broker (n个) 和 待分配 partition 排序
 2. 将第 i 个 partition 分配到第 (`i % n`) 个broker上
 3. 将第 i 个 partition 的第 j 个 replica 分配到第 `(i + j) % n` 个 broker 上
+
+### 3.3 数据检索机制
+1. Kafka 文件结构
+    * partition 在实际的存储结构中是一个目录，命名规则为 topic + partition序号
+    * segment 由两个文件组成，索引文件 *.index 和 消息内容文件 *.log
+
+2. 消息存储
+    * 消息按顺序产生，每个消息都有一个序号 offset，从0开始
+    * segment文件以上一个segment最后一个offset命名，文件名长度固定20位（不足补零，如00000000000000000300.index）
+    * index文件存储键值对：key为offset，value为 .log中的偏移量
+
+3. 数据检索
+    * 二分查找，先根据 offset 找到对应的 segment
+    * 从 index 中找到其物理偏移量
+    * 到 log 文件中读取消息内容
+
+### 3.4 数据安全性
+1. ack应答机制
+    * 可以通过 acks 参数指定Producer 向 Broker 发送数据时的消息确认机制(request.required.acks)
+    * acks = 0：无需等待确认而继续发送
+    * acks = 1：Producer在ISR中的Leader已成功收到的数据并得到确认后发送下一条message。如果Leader宕机了，则会丢失数据
+    * acks = -1(all)：producer需要等待ISR中的所有Follower都确认接收到数据后才算一次发送完成，可靠性最高
+
+2. ISR 机制
+    * 相关概念
+        * ISR(In-Sync Replicas )：与leader保持同步的follower集合
+        * OSR(Outof-Sync Replicas)：离开同步队列的副本
+        * AR(Assigned Replicas)：分区的所有副本，=ISR + OSR
+
+    * 机制
+        * Leader维护一个动态的in-sync replica set (ISR-同步副本列表)，意为和leader保持同步的follower集合。
+        * ISR中的follower完成数据的同步之后，leader就会给follower发送ack。如果follower长时间未向leader同步数据，则该follower将被踢出ISR
+        * 副本的滞后于 leader 是根据 replica.lag.max.messages 或 replica.lag.time.max.ms 来衡量的； 前者用于检测慢副本（Slow replica），而后者用于检测卡住副本（Stuck replica）
 
 ## Reference
 1. [apache Kafka](https://kafka.apache.org/)
