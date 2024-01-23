@@ -1,0 +1,211 @@
+<!DOCTYPE html><html lang="zh-CN" data-default-color-scheme="&#34;auto&#34;"><head><meta charset="UTF-8"><link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png"><link rel="icon" type="image/png" href="/img/site.png"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="theme-color" content="#2f4154"><meta name="description" content="Jipeng Hao 的个人博客"><meta name="author" content="Martentite"><meta name="keywords" content="java, python, blog"><title>Kafka简单使用(1) - 山那边的小木屋</title><link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css"><link rel="stylesheet" href="/lib/hint/hint.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/prism/1.21.0/themes/prism-okaidia.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css"><link rel="stylesheet" href="/css/main.css"><script src="/js/utils.js"></script><script src="/js/color-schema.js"></script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="山那边的小木屋" type="application/atom+xml">
+</head><body><header style="height:70vh"><nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar"><div class="container"><a class="navbar-brand" href="/">&nbsp;<strong>Jacob</strong>&nbsp;</a> <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><div class="animated-icon"><span></span><span></span><span></span></div></button><div class="collapse navbar-collapse" id="navbarSupportedContent"><ul class="navbar-nav ml-auto text-center"><li class="nav-item"><a class="nav-link" href="/"><i class="iconfont icon-home-fill"></i> 首页</a></li><li class="nav-item"><a class="nav-link" href="/archives/"><i class="iconfont icon-archive-fill"></i> 归档</a></li><li class="nav-item"><a class="nav-link" href="/categories/"><i class="iconfont icon-category-fill"></i> 分类</a></li><li class="nav-item"><a class="nav-link" href="/tags/"><i class="iconfont icon-tags-fill"></i> 标签</a></li><li class="nav-item"><a class="nav-link" href="/about/"><i class="iconfont icon-user-fill"></i> 关于</a></li><li class="nav-item"><a class="nav-link" href="/links/"><i class="iconfont icon-link-fill"></i> 友链</a></li><li class="nav-item" id="search-btn"><a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i class="iconfont icon-search"></i>&nbsp;</a></li><li class="nav-item" id="color-toggle-btn"><a class="nav-link" href="javascript:">&nbsp;<i class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a></li></ul></div></div></nav><div class="banner intro-2" id="background" parallax="true" style="background:url(/img/banner/kafka.png) no-repeat center center;background-size:cover"><div class="full-bg-img"><div class="mask flex-center" style="background-color:rgba(0,0,0,.3)"><div class="container page-header text-center fade-in-up"><span class="h2" id="subtitle"></span><div class="mt-3"><span class="post-meta mr-2"><i class="iconfont icon-author" aria-hidden="true"></i> Martentite </span><span class="post-meta"><i class="iconfont icon-date-fill" aria-hidden="true"></i> <time datetime="2021-10-31 20:20" pubdate>2021年10月31日 晚上</time></span></div><div class="mt-1"><span class="post-meta mr-2"><i class="iconfont icon-chart"></i> 1.2k 字 </span><span class="post-meta mr-2"><i class="iconfont icon-clock-fill"></i> 21 分钟</span></div></div></div></div></div></header><main><div class="container-fluid"><div class="row"><div class="d-none d-lg-block col-lg-2"></div><div class="col-lg-8 nopadding-md"><div class="container nopadding-md" id="board-ctn"><div class="py-5" id="board"><article class="post-content mx-auto" id="post"><h1 style="display:none">Kafka简单使用(1)</h1><div class="markdown-body" id="post-body"><h2 id="1-搭建集群"><a href="#1-搭建集群" class="headerlink" title="1. 搭建集群"></a>1. 搭建集群</h2><h3 id="1-1-通过-docker-搭建"><a href="#1-1-通过-docker-搭建" class="headerlink" title="1.1 通过 docker 搭建"></a>1.1 通过 docker 搭建</h3><ol><li><p>创建网络</p><pre class="language-sh" data-language="sh"><code class="language-sh">docker network create --subnet 172.30.0.0&#x2F;23 --gateway 172.30.0.1 kafka</code></pre></li><li><p>docker-compose-zookeeper</p><pre class="language-sh" data-language="sh"><code class="language-sh">version: &#39;3.9&#39;
+
+services: 
+    zoo1:
+        image: bitnami&#x2F;zookeeper:3.7.0
+        restart: always
+        hostname: zoo1
+        container_name: zoo1
+        ports:
+            - 2184:2181
+        volumes: 
+            - &quot;&#x2F;home&#x2F;jphao&#x2F;kafka&#x2F;zkcluster&#x2F;zoo1&#x2F;data:&#x2F;data&quot;
+            - &quot;&#x2F;home&#x2F;jphao&#x2F;kafka&#x2F;zkcluster&#x2F;zoo1&#x2F;datalog:&#x2F;datalog&quot;
+        environment: 
+            ZOO_SERVER_ID: 1
+            ZOO_SERVERS: 0.0.0.0:2888:3888, zoo2:2888:3888, zoo3:2888:3888
+            ALLOW_ANONYMOUS_LOGIN: &#39;true&#39;
+        networks:
+            kafka:
+                ipv4_address: 172.30.0.11
+
+    zoo2:
+        image: bitnami&#x2F;zookeeper:3.7.0
+        restart: always
+        hostname: zoo2
+        container_name: zoo2
+        ports:
+            - 2185:2181
+        volumes: 
+            - &quot;&#x2F;home&#x2F;jphao&#x2F;kafka&#x2F;zkcluster&#x2F;zoo2&#x2F;data:&#x2F;data&quot;
+            - &quot;&#x2F;home&#x2F;jphao&#x2F;kafka&#x2F;zkcluster&#x2F;zoo2&#x2F;datalog:&#x2F;datalog&quot;
+        environment: 
+            ZOO_SERVER_ID: 2
+            ZOO_SERVERS: zoo1:2888:3888, 0.0.0.0:2888:3888, zoo3:2888:3888
+            ALLOW_ANONYMOUS_LOGIN: &#39;true&#39;
+        networks:
+            kafka:
+                ipv4_address: 172.30.0.12
+
+    zoo3:
+        image: bitnami&#x2F;zookeeper:3.7.0
+        restart: always
+        hostname: zoo3
+        container_name: zoo3
+        ports:
+            - 2186:2181
+        volumes: 
+            - &quot;&#x2F;home&#x2F;jphao&#x2F;kafka&#x2F;zkcluster&#x2F;zoo3&#x2F;data:&#x2F;data&quot;
+            - &quot;&#x2F;home&#x2F;jphao&#x2F;kafka&#x2F;zkcluster&#x2F;zoo3&#x2F;datalog:&#x2F;datalog&quot;
+        environment: 
+            ZOO_SERVER_ID: 3
+            ZOO_SERVERS: zoo1:2888:3888, zoo2:2888:3888, 0.0.0.0:2888:3888
+            ALLOW_ANONYMOUS_LOGIN: &#39;true&#39;
+        networks:
+            kafka:
+                ipv4_address: 172.30.0.13
+
+networks: 
+    kafka:
+        external: 
+            name: kafka </code></pre></li><li><p>docker-compose-kafka</p><pre class="language-sh" data-language="sh"><code class="language-sh">version: &#39;3.9&#39;
+
+services: 
+    kafka1:
+        image: bitnami&#x2F;kafka:2.7.0
+        restart: always
+        hostname: kafka1
+        container_name: kafka1
+        privileged: true
+        ports:
+            - 9092:9092
+        environment:
+            KAFKA_ADVERTISED_HOST_NAME: kafka1
+            KAFKA_LISTENERS: PLAINTEXT:&#x2F;&#x2F;kafka1:9092
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT:&#x2F;&#x2F;kafka1:9092
+            KAFKA_ADVERTISED_PORT: 9092
+            KAFKA_ZOOKEEPER_CONNECT: zoo1:2181,zoo2:2181,zoo3:2181
+            ALLOW_PLAINTEXT_LISTENER: &#39;true&#39;
+        volumes:
+            - &#x2F;home&#x2F;jphao&#x2F;kafka&#x2F;kafkaCluster&#x2F;kafka1&#x2F;logs:&#x2F;kafka
+        networks:
+            kafka:
+                ipv4_address: 172.30.1.11
+        extra_hosts: 
+            zoo1: 172.30.0.11
+            zoo2: 172.30.0.12
+            zoo3: 172.30.0.13
+
+    kafka2:
+        image: bitnami&#x2F;kafka:2.7.0
+        restart: always
+        hostname: kafka2
+        container_name: kafka2
+        privileged: true
+        ports:
+            - 9093:9093
+        environment:
+            KAFKA_ADVERTISED_HOST_NAME: kafka2
+            KAFKA_LISTENERS: PLAINTEXT:&#x2F;&#x2F;kafka2:9093
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT:&#x2F;&#x2F;kafka2:9093
+            KAFKA_ADVERTISED_PORT: 9093
+            KAFKA_ZOOKEEPER_CONNECT: zoo1:2181,zoo2:2181,zoo3:2181
+            ALLOW_PLAINTEXT_LISTENER: &#39;true&#39;
+        volumes:
+            - &#x2F;home&#x2F;jphao&#x2F;kafka&#x2F;kafkaCluster&#x2F;kafka2&#x2F;logs:&#x2F;kafka
+        networks:
+            kafka:
+                ipv4_address: 172.30.1.12
+        extra_hosts: 
+            zoo1: 172.30.0.11
+            zoo2: 172.30.0.12
+            zoo3: 172.30.0.13
+
+    kafka3:
+        image: bitnami&#x2F;kafka:2.7.0
+        restart: always
+        hostname: kafka3
+        container_name: kafka3
+        privileged: true
+        ports:
+            - 9094:9094
+        environment:
+            KAFKA_ADVERTISED_HOST_NAME: kafka3
+            KAFKA_LISTENERS: PLAINTEXT:&#x2F;&#x2F;kafka3:9094
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT:&#x2F;&#x2F;kafka3:9094
+            KAFKA_ADVERTISED_PORT: 9094
+            KAFKA_ZOOKEEPER_CONNECT: zoo1:2181,zoo2:2181,zoo3:2181
+            ALLOW_PLAINTEXT_LISTENER: &#39;true&#39;
+        volumes:
+            - &#x2F;home&#x2F;jphao&#x2F;kafka&#x2F;kafkaCluster&#x2F;kafka3&#x2F;logs:&#x2F;kafka
+        networks:
+            kafka:
+                ipv4_address: 172.30.1.13
+        extra_hosts: 
+            zoo1: 172.30.0.11
+            zoo2: 172.30.0.12
+            zoo3: 172.30.0.13                            
+
+networks: 
+    kafka:
+        external: 
+            name: kafka
+</code></pre></li><li><p>启动</p><pre class="language-sh" data-language="sh"><code class="language-sh"># 创建容器
+docker-compose -f docker-compose-zookeeper.yml up -d
+docker-compose -f docker-compose-kafka.yml up -d
+
+# 查看容器
+docker ps
+
+# 查看主题
+kafka-topics.sh --bootstrap-server kafka2:9093 --list
+kafka-topics.sh --bootstrap-server kafka1:9092 --describe --topic kraft-test</code></pre></li></ol><h3 id="1-2-配置"><a href="#1-2-配置" class="headerlink" title="1.2 配置"></a>1.2 配置</h3><ol><li><p>在 <code>/etc/hosts</code> 文件中添加：</p><pre class="language-none"><code class="language-none">127.0.0.1 kafka1
+
+127.0.0.1 kafka2
+
+127.0.0.1 kafka3</code></pre><p>也可以将docker-compose-kafka.yml中</p><pre class="language-yml" data-language="yml"><code class="language-yml">KAFKA_ADVERTISED_LISTENERS: PLAINTEXT:&#x2F;&#x2F;kafka1:9092</code></pre><p>中的 kafka1、kafka2、kafka3 替换为宿主机 ip</p></li><li><p>查看容器的网络信息</p><pre class="language-sh" data-language="sh"><code class="language-sh">docker network inspect kafka</code></pre></li></ol><h2 id="2-在-Spring-Boot-中应用"><a href="#2-在-Spring-Boot-中应用" class="headerlink" title="2. 在 Spring Boot 中应用"></a>2. 在 Spring Boot 中应用</h2><h3 id="2-1-环境搭建"><a href="#2-1-环境搭建" class="headerlink" title="2.1 环境搭建"></a>2.1 环境搭建</h3><ol><li><p>依赖</p><pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-web<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.kafka<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-kafka<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span></code></pre></li><li><p>配置</p><pre class="language-yml" data-language="yml"><code class="language-yml">spring:
+kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+
+    auto-offset-reset: earliest
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.apache.kafka.common.serialization.StringSerializer</code></pre></li><li><p>手动提交</p><pre class="language-yml" data-language="yml"><code class="language-yml">consumer:
+  enable-auto-commit: false</code></pre><p>手动提交时 <code>ack-mode</code> 设置</p><pre class="language-yml" data-language="yml"><code class="language-yml">kafka:
+    listener:
+    ack-mode: manual</code></pre><table><thead><tr><th align="center">ackMode</th><th align="left">说明</th></tr></thead><tbody><tr><td align="center">MANUAL</td><td align="left">当每一批poll()的数据被消费者监听器（ListenerConsumer）处理之后, 手动调用 Acknowledgment.acknowledge() 后提交</td></tr><tr><td align="center">MANUAL_IMMEDIATE</td><td align="left">手动调用 Acknowledgment.acknowledge() 后立即提交</td></tr><tr><td align="center">RECORD</td><td align="left">当每一条记录被消费者监听器（ListenerConsumer）处理之后提交</td></tr><tr><td align="center">BATCH(默认)</td><td align="left">当每一批poll()的数据被消费者监听器（ListenerConsumer）处理之后提交</td></tr><tr><td align="center">TIME</td><td align="left">当每一批poll()的数据被消费者监听器（ListenerConsumer）处理之后，距离上次提交时间大于TIME时提交</td></tr><tr><td align="center">COUNT</td><td align="left">当每一批poll()的数据被消费者监听器（ListenerConsumer）处理之后，被处理record数量大于等于COUNT时提交</td></tr><tr><td align="center">COUNT_TIME</td><td align="left">TIME或COUNT　有一个条件满足时提交</td></tr></tbody></table></li></ol><ol start="4"><li><p>项目源码</p><p><a target="_blank" rel="noopener" href="https://github.com/JabinHao/spring-boot-demo">github</a></p></li></ol><h3 id="2-2-生产者"><a href="#2-2-生产者" class="headerlink" title="2.2 生产者"></a>2.2 生产者</h3><ol><li><p>说明</p><ul><li>理想结构：controller层接受请求，service层作为生产者，将消息存入 kafka</li><li>这里为了简化省去service层</li></ul></li><li><p>UserController.java</p><pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"/save/user"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">saveUser</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestBody</span> <span class="token class-name">User</span> user<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+
+    log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"save user: &#123;&#125;"</span><span class="token punctuation">,</span> user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">String</span> json <span class="token operator">=</span> JSON_UTIL<span class="token punctuation">.</span><span class="token function">toJson</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    kafkaTemplate<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span><span class="token string">"User"</span><span class="token punctuation">,</span> json<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre></li></ol><h3 id="2-3-消费者"><a href="#2-3-消费者" class="headerlink" title="2.3 消费者"></a>2.3 消费者</h3><ol><li><p>消费者接收消息，存入数据库</p></li><li><p>Consumer.java</p><pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Service</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Consumer</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Logger</span> logger <span class="token operator">=</span> <span class="token class-name">LoggerFactory</span><span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span><span class="token class-name">Producer</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">UserMapper</span> userMapper<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">Consumer</span><span class="token punctuation">(</span><span class="token class-name">UserMapper</span> userMapper<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>userMapper <span class="token operator">=</span> userMapper<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token annotation punctuation">@KafkaListener</span><span class="token punctuation">(</span>topics <span class="token operator">=</span> <span class="token string">"User"</span><span class="token punctuation">,</span> groupId <span class="token operator">=</span> <span class="token string">"group_id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">consumer</span><span class="token punctuation">(</span><span class="token class-name">String</span> message<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">"#### -> Consumed message -> %s"</span><span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">User</span> user <span class="token operator">=</span> <span class="token class-name">CommonConstant</span><span class="token punctuation">.</span>JSON_UTIL<span class="token punctuation">.</span><span class="token function">fromJson</span><span class="token punctuation">(</span>message<span class="token punctuation">,</span> <span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        userMapper<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre></li><li><p>设置消费组、多topic、指定分区、指定偏移量消费及设置消费者个数</p><pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@KafkaListener</span><span class="token punctuation">(</span>groupId <span class="token operator">=</span> <span class="token string">"group_id"</span><span class="token punctuation">,</span> topicPartitions <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+        <span class="token annotation punctuation">@TopicPartition</span><span class="token punctuation">(</span>topic <span class="token operator">=</span> <span class="token string">"topic1"</span><span class="token punctuation">,</span> partitions <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">"0"</span><span class="token punctuation">,</span> <span class="token string">"1"</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token annotation punctuation">@TopicPartition</span><span class="token punctuation">(</span>topic <span class="token operator">=</span> <span class="token string">"topic2"</span><span class="token punctuation">,</span> partitions <span class="token operator">=</span> <span class="token string">"0"</span><span class="token punctuation">,</span>
+                partitionOffsets <span class="token operator">=</span> <span class="token annotation punctuation">@PartitionOffset</span><span class="token punctuation">(</span>partition <span class="token operator">=</span> <span class="token string">"1"</span><span class="token punctuation">,</span> initialOffset <span class="token operator">=</span> <span class="token string">"100"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>concurrency <span class="token operator">=</span> <span class="token string">"3"</span><span class="token punctuation">)</span><span class="token comment">//concurrency就是同组下的消费者个数，就是并发消费数, 建议⼩于等于分区总数</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">listenGroup</span><span class="token punctuation">(</span><span class="token class-name">ConsumerRecord</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">></span></span> <span class="token keyword">record</span><span class="token punctuation">,</span> <span class="token class-name">Acknowledgment</span> ack<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">String</span> value <span class="token operator">=</span> <span class="token keyword">record</span><span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">record</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">//⼿动提交offset</span>
+    ack<span class="token punctuation">.</span><span class="token function">acknowledge</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre></li></ol><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol><li><a target="_blank" rel="noopener" href="https://kafka.apache.org/">Apache Kafka</a></li><li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-kafka/docs/current/reference/html/">Spring for Apache Kafka</a></li><li><a target="_blank" rel="noopener" href="https://www.confluent.io/blog/apache-kafka-spring-boot-application/">How to Work with Apache Kafka in Your Spring Boot Application</a></li></ol></div><hr><div><div class="post-metas mb-3"><div class="post-meta mr-3"><i class="iconfont icon-category"></i> <a class="hover-with-bg" href="/categories/Kafka/">Kafka</a></div><div class="post-meta"><i class="iconfont icon-tags"></i> <a class="hover-with-bg" href="/tags/kafka/">kafka</a></div></div><div class="post-prevnext row"><article class="post-prev col-6"><a href="/posts/8caf1d98/"><i class="iconfont icon-arrowleft"></i> <span class="hidden-mobile">Manjaro 中使用 Docker</span> <span class="visible-mobile">上一篇</span></a></article><article class="post-next col-6"><a href="/posts/28007f80/"><span class="hidden-mobile">Docker 网络: 单主机网络模式</span> <span class="visible-mobile">下一篇</span> <i class="iconfont icon-arrowright"></i></a></article></div></div><article class="comments" id="comments"><div class="disqus" style="width:100%"><div id="disqus_thread"></div><script>function loadDisqus(){addCssLink("https://cdn.jsdelivr.net/npm/disqusjs@1.0/dist/disqusjs.css"),addScript("https://cdn.jsdelivr.net/npm/disqusjs@1.0/dist/disqus.js",(function(){new DisqusJS({shortname:"Jacob",apikey:""})}))}waitElementVisible("disqus_thread",loadDisqus)</script><noscript>Please enable JavaScript to view the <a target="_blank" href="https://disqus.com/?ref_noscript" rel="nofollow noopener noopener">comments powered by Disqus.</a></noscript></div></article></article></div></div></div><div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn"><div id="toc"><p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p><div id="tocbot"></div></div></div></div></div></main><a id="scroll-top-button" href="#" role="button"><i class="iconfont icon-arrowup" aria-hidden="true"></i></a><div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable modal-lg" role="document"><div class="modal-content"><div class="modal-header text-center"><h4 class="modal-title w-100 font-weight-bold">搜索</h4><button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body mx-3"><div class="md-form mb-5"><input type="text" id="local-search-input" class="form-control validate"> <label data-error="x" data-success="v" for="local-search-input">关键词</label></div><div class="list-group" id="local-search-result"></div></div></div></div></div><footer class="mt-5"><div class="text-center py-3"><div><a href="https://github.com/" target="_blank" rel="nofollow noopener"><span>Github</span></a> <i class="iconfont icon-love"></i> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a></div><div><div class="statistics"><span id="busuanzi_container_site_pv" style="display:none">总访问量 <span id="busuanzi_value_site_pv"></span> 次 </span><span id="busuanzi_container_site_uv" style="display:none">总访客数 <span id="busuanzi_value_site_uv"></span> 人</span></div></div><div><span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span><script>var now=new Date;function createtime(){var n=new Date("10/06/2020 00:00:00");now.setTime(now.getTime()+250),days=(now-n)/1e3/60/60/24,dnum=Math.floor(days),hours=(now-n)/1e3/60/60-24*dnum,hnum=Math.floor(hours),1==String(hnum).length&&(hnum="0"+hnum),minutes=(now-n)/1e3/60-1440*dnum-60*hnum,mnum=Math.floor(minutes),1==String(mnum).length&&(mnum="0"+mnum),seconds=(now-n)/1e3-86400*dnum-3600*hnum-60*mnum,snum=Math.round(seconds),1==String(snum).length&&(snum="0"+snum),document.getElementById("timeDate").innerHTML="本站安全运行&nbsp"+dnum+"&nbsp天",document.getElementById("times").innerHTML=hnum+"&nbsp小时&nbsp"+mnum+"&nbsp分&nbsp"+snum+"&nbsp秒"}setInterval("createtime()",250)</script></div></div></footer><script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script><script src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script><script src="/js/debouncer.js"></script><script src="/js/main.js"></script><script src="/js/lazyload.js"></script><script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script><script src="/js/clipboard-use.js"></script><script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js"></script><script>$(document).ready((function(){var t=$("#board-ctn").offset().top;tocbot.init({tocSelector:"#tocbot",contentSelector:"#post-body",headingSelector:"h1,h2,h3,h4,h5,h6",linkClass:"tocbot-link",activeLinkClass:"tocbot-active-link",listClass:"tocbot-list",isCollapsedClass:"tocbot-is-collapsed",collapsibleClass:"tocbot-is-collapsible",collapseDepth:3,scrollSmooth:!0,headingsOffset:-t}),$(".toc-list-item").length>0&&$("#toc").css("visibility","visible")}))</script><script src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js"></script><script>var typed=new Typed("#subtitle",{strings:["  ","Kafka简单使用(1)&nbsp;"],cursorChar:"|",typeSpeed:90,loop:!0});typed.stop(),$(document).ready((function(){$(".typed-cursor").addClass("h2"),typed.start()}))</script><script src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js"></script><script>anchors.options={placement:"right",visible:"hover"};var el="h1,h2,h3,h4,h5,h6".split(","),res=[];for(item of el)res.push(".markdown-body > "+item);anchors.add(res.join(", "))</script><script src="/js/local-search.js"></script><script>var path="/local-search.xml",inputArea=document.querySelector("#local-search-input");inputArea.onclick=function(){searchFunc(path,"local-search-input","local-search-result"),this.onclick=null}</script><script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js"></script><link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"><script>$("#post img:not(.no-zoom img, img[no-zoom]), img[zoom]").each((function(){var t=document.createElement("a");$(t).attr("data-fancybox","images"),$(t).attr("href",$(this).attr("src")),$(this).wrap(t)}))</script></body></html>

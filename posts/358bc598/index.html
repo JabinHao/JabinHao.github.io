@@ -1,0 +1,604 @@
+<!DOCTYPE html><html lang="zh-CN" data-default-color-scheme="&#34;auto&#34;"><head><meta charset="UTF-8"><link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png"><link rel="icon" type="image/png" href="/img/site.png"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="theme-color" content="#2f4154"><meta name="description" content="Jipeng Hao 的个人博客"><meta name="author" content="Martentite"><meta name="keywords" content="java, python, blog"><title>Chapter4后台管理 — 角色维护 - 山那边的小木屋</title><link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css"><link rel="stylesheet" href="/lib/hint/hint.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/prism/1.21.0/themes/prism-okaidia.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css"><link rel="stylesheet" href="/css/main.css"><script src="/js/utils.js"></script><script src="/js/color-schema.js"></script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="山那边的小木屋" type="application/atom+xml">
+</head><body><header style="height:70vh"><nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar"><div class="container"><a class="navbar-brand" href="/">&nbsp;<strong>Jacob</strong>&nbsp;</a> <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><div class="animated-icon"><span></span><span></span><span></span></div></button><div class="collapse navbar-collapse" id="navbarSupportedContent"><ul class="navbar-nav ml-auto text-center"><li class="nav-item"><a class="nav-link" href="/"><i class="iconfont icon-home-fill"></i> 首页</a></li><li class="nav-item"><a class="nav-link" href="/archives/"><i class="iconfont icon-archive-fill"></i> 归档</a></li><li class="nav-item"><a class="nav-link" href="/categories/"><i class="iconfont icon-category-fill"></i> 分类</a></li><li class="nav-item"><a class="nav-link" href="/tags/"><i class="iconfont icon-tags-fill"></i> 标签</a></li><li class="nav-item"><a class="nav-link" href="/about/"><i class="iconfont icon-user-fill"></i> 关于</a></li><li class="nav-item"><a class="nav-link" href="/links/"><i class="iconfont icon-link-fill"></i> 友链</a></li><li class="nav-item" id="search-btn"><a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i class="iconfont icon-search"></i>&nbsp;</a></li><li class="nav-item" id="color-toggle-btn"><a class="nav-link" href="javascript:">&nbsp;<i class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a></li></ul></div></div></nav><div class="banner intro-2" id="background" parallax="true" style="background:url(/img/post/banner/mandao.png) no-repeat center center;background-size:cover"><div class="full-bg-img"><div class="mask flex-center" style="background-color:rgba(0,0,0,.3)"><div class="container page-header text-center fade-in-up"><span class="h2" id="subtitle"></span><div class="mt-3"><span class="post-meta mr-2"><i class="iconfont icon-author" aria-hidden="true"></i> Martentite </span><span class="post-meta"><i class="iconfont icon-date-fill" aria-hidden="true"></i> <time datetime="2021-01-06 18:32" pubdate>2021年1月6日 晚上</time></span></div><div class="mt-1"><span class="post-meta mr-2"><i class="iconfont icon-chart"></i> 5.1k 字 </span><span class="post-meta mr-2"><i class="iconfont icon-clock-fill"></i> 88 分钟</span></div></div></div></div></div></header><main><div class="container-fluid"><div class="row"><div class="d-none d-lg-block col-lg-2"></div><div class="col-lg-8 nopadding-md"><div class="container nopadding-md" id="board-ctn"><div class="py-5" id="board"><article class="post-content mx-auto" id="post"><h1 style="display:none">Chapter4后台管理 — 角色维护</h1><div class="markdown-body" id="post-body"><h2 id="4-1-角色分页操作"><a href="#4-1-角色分页操作" class="headerlink" title="4.1 角色分页操作"></a>4.1 角色分页操作</h2><h3 id="4-1-1-说明"><a href="#4-1-1-说明" class="headerlink" title="4.1.1 说明"></a>4.1.1 说明</h3><ol><li><p>效果：角色维护页面实现分页显示</p></li><li><p>思路<br><img src="https://raw.githubusercontent.com/JabinHao/mihs/master/blog/crowd_funding/4-1-1.png" srcset="/img/loading.gif"></p><h3 id="4-1-2-准备工作"><a href="#4-1-2-准备工作" class="headerlink" title="4.1.2 准备工作"></a>4.1.2 准备工作</h3></li><li><p>新建数据库表</p><pre class="language-mysql" data-language="mysql"><code class="language-mysql">CREATE TABLE &#96;t_role&#96; (
+    id INT NOT NULL AUTO_INCREMENT,
+    name CHAR(100),
+    PRIMARY KEY (id)
+);</code></pre></li><li><p>逆向工程</p><ul><li>修改reverse模块下的generatorConfig.xml<pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token comment">&lt;!--  数据库表名字和我们的 entity 类对应的映射指定 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>table</span> <span class="token attr-name">tableName</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>t_role<span class="token punctuation">"</span></span> <span class="token attr-name">domainObjectName</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Role<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span></code></pre></li><li>生成 mybatis-generator:generate</li><li>Role中新建有参、无参构造器、toString方法</li><li>资源归位：将新生成的四个文件移动到相应的模块</li></ul></li><li><p>service</p><ul><li>RoleService接口<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">RoleService</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">PageInfo</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Role</span><span class="token punctuation">></span></span> <span class="token function">getPageInfo</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> pageNum<span class="token punctuation">,</span> <span class="token class-name">Integer</span> pageSize<span class="token punctuation">,</span> <span class="token class-name">String</span> keyword<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre></li><li>RoleServiceImpl实现类<pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Service</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RoleServiceImpl</span> <span class="token keyword">implements</span> <span class="token class-name">RoleService</span><span class="token punctuation">&#123;</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> <span class="token class-name">RoleMapper</span> roleMapper<span class="token punctuation">;</span>
+        <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token class-name">PageInfo</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Role</span><span class="token punctuation">></span></span> <span class="token function">getPageInfo</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> pageNum<span class="token punctuation">,</span> <span class="token class-name">Integer</span> pageSize<span class="token punctuation">,</span> <span class="token class-name">String</span> keyword<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 1.开启分页功能</span>
+        <span class="token class-name">PageHelper</span><span class="token punctuation">.</span><span class="token function">startPage</span><span class="token punctuation">(</span>pageNum<span class="token punctuation">,</span>pageSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 2.执行查询</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Role</span><span class="token punctuation">></span></span> roleList <span class="token operator">=</span> roleMapper<span class="token punctuation">.</span><span class="token function">selectRoleByKeyword</span><span class="token punctuation">(</span>keyword<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 3.封装为PageInfo对象返回</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">PageInfo</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>roleList<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre></li></ul></li><li><p>handler</p><ul><li>RoleHandler类<pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Controller</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RoleHandler</span> <span class="token punctuation">&#123;</span>
+
+<span class="token annotation punctuation">@Autowired</span>
+<span class="token keyword">private</span> <span class="token class-name">RoleService</span> roleService<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/role/get/page/info.do"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token class-name">ResultEntity</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">PageInfo</span><span class="token punctuation">&lt;</span><span class="token class-name">Role</span><span class="token punctuation">></span><span class="token punctuation">></span></span> <span class="token function">getPageInfo</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestParam</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"pageNum"</span><span class="token punctuation">,</span> defaultValue <span class="token operator">=</span> <span class="token string">"1"</span><span class="token punctuation">)</span> <span class="token class-name">Integer</span> pageNum<span class="token punctuation">,</span>
+                                                <span class="token annotation punctuation">@RequestParam</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"pageSize"</span><span class="token punctuation">,</span> defaultValue <span class="token operator">=</span> <span class="token string">"5"</span><span class="token punctuation">)</span> <span class="token class-name">Integer</span> pageSize<span class="token punctuation">,</span>
+                                                <span class="token annotation punctuation">@RequestParam</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"keyword"</span><span class="token punctuation">,</span> defaultValue <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">)</span> <span class="token class-name">String</span> keyword<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 调用service获取分页数据</span>
+    <span class="token class-name">PageInfo</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Role</span><span class="token punctuation">></span></span> pageInfo <span class="token operator">=</span> roleService<span class="token punctuation">.</span><span class="token function">getPageInfo</span><span class="token punctuation">(</span>pageNum<span class="token punctuation">,</span>pageSize<span class="token punctuation">,</span>keyword<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token class-name">ResultEntity</span><span class="token punctuation">.</span><span class="token function">successWithData</span><span class="token punctuation">(</span>pageInfo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre></li></ul></li><li><p>mapper</p><ul><li>RoleMapper.xml新增方法<pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>select</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>selectRoleByKeyword<span class="token punctuation">"</span></span> <span class="token attr-name">resultMap</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>BaseResultMap<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    select id, name from t_role
+    where name like concat("%",#&#123;keyword&#125;,"%)
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>select</span><span class="token punctuation">></span></span></code></pre>可能需要将文件内的Role、RoleExample修改为全类名：<code>parameterType=&quot;com.atguigu.crowd.entity.RoleExample&quot;</code></li><li>RoleMapper.java<pre class="language-java" data-language="java"><code class="language-java"><span class="token class-name">Role</span> <span class="token function">selectRoleByKeyword</span><span class="token punctuation">(</span><span class="token class-name">String</span> keyword<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></li></ul></li></ol><h3 id="4-1-3-主页面配置"><a href="#4-1-3-主页面配置" class="headerlink" title="4.1.3 主页面配置"></a>4.1.3 主页面配置</h3><ol><li>mvc配置文件<pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">mvc:</span>view-controller</span> <span class="token attr-name">path</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/role/to/page.do<span class="token punctuation">"</span></span> <span class="token attr-name">view-name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>role-page<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span></code></pre></li><li>role-page.jsp<pre class="language-jsp" data-language="jsp"><code class="language-jsp">&lt;%@ page contentType&#x3D;&quot;text&#x2F;html;charset&#x3D;UTF-8&quot; language&#x3D;&quot;java&quot; %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang&#x3D;&quot;zh-CN&quot;&gt;
+&lt;%@include file&#x3D;&quot;include-head.jsp&quot; %&gt;
+
+&lt;body&gt;
+&lt;%@include file&#x3D;&quot;include-nav.jsp&quot; %&gt;
+&lt;div class&#x3D;&quot;container-fluid&quot;&gt;
+    &lt;div class&#x3D;&quot;row&quot;&gt;
+        &lt;%@include file&#x3D;&quot;include-sidebar.jsp&quot; %&gt;
+        &lt;div class&#x3D;&quot;col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main&quot;&gt;
+            &lt;div class&#x3D;&quot;panel panel-default&quot;&gt;
+                &lt;div class&#x3D;&quot;panel-heading&quot;&gt;
+                    &lt;h3 class&#x3D;&quot;panel-title&quot;&gt;&lt;i class&#x3D;&quot;glyphicon glyphicon-th&quot;&gt;&lt;&#x2F;i&gt; 数据列表&lt;&#x2F;h3&gt;
+                &lt;&#x2F;div&gt;
+                &lt;div class&#x3D;&quot;panel-body&quot;&gt;
+                    &lt;form class&#x3D;&quot;form-inline&quot; role&#x3D;&quot;form&quot; style&#x3D;&quot;float:left;&quot;&gt;
+                        &lt;div class&#x3D;&quot;form-group has-feedback&quot;&gt;
+                            &lt;div class&#x3D;&quot;input-group&quot;&gt;
+                                &lt;div class&#x3D;&quot;input-group-addon&quot;&gt;查询条件&lt;&#x2F;div&gt;
+                                &lt;input class&#x3D;&quot;form-control has-success&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;请输入查询条件&quot;&gt;
+                            &lt;&#x2F;div&gt;
+                        &lt;&#x2F;div&gt;
+                        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-warning&quot;&gt;&lt;i class&#x3D;&quot;glyphicon glyphicon-search&quot;&gt;&lt;&#x2F;i&gt; 查询&lt;&#x2F;button&gt;
+                    &lt;&#x2F;form&gt;
+                    &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-danger&quot; style&#x3D;&quot;float:right;margin-left:10px;&quot;&gt;&lt;i class&#x3D;&quot; glyphicon glyphicon-remove&quot;&gt;&lt;&#x2F;i&gt; 删除&lt;&#x2F;button&gt;
+                    &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-primary&quot; style&#x3D;&quot;float:right;&quot; onclick&#x3D;&quot;window.location.href&#x3D;&#39;form.html&#39;&quot;&gt;&lt;i class&#x3D;&quot;glyphicon glyphicon-plus&quot;&gt;&lt;&#x2F;i&gt; 新增&lt;&#x2F;button&gt;
+                    &lt;br&gt;
+                    &lt;hr style&#x3D;&quot;clear:both;&quot;&gt;
+                    &lt;div class&#x3D;&quot;table-responsive&quot;&gt;
+                        &lt;table class&#x3D;&quot;table  table-bordered&quot;&gt;
+                            &lt;thead&gt;
+                            &lt;tr&gt;
+                                &lt;th width&#x3D;&quot;30&quot;&gt;#&lt;&#x2F;th&gt;
+                                &lt;th width&#x3D;&quot;30&quot;&gt;&lt;input type&#x3D;&quot;checkbox&quot;&gt;&lt;&#x2F;th&gt;
+                                &lt;th&gt;名称&lt;&#x2F;th&gt;
+                                &lt;th width&#x3D;&quot;100&quot;&gt;操作&lt;&#x2F;th&gt;
+                            &lt;&#x2F;tr&gt;
+                            &lt;&#x2F;thead&gt;
+                            &lt;tbody&gt;
+                            &lt;tr&gt;
+                                &lt;td&gt;1&lt;&#x2F;td&gt;
+                                &lt;td&gt;&lt;input type&#x3D;&quot;checkbox&quot;&gt;&lt;&#x2F;td&gt;
+                                &lt;td&gt;PM - 项目经理&lt;&#x2F;td&gt;
+                                &lt;td&gt;
+                                    &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-success btn-xs&quot;&gt;&lt;i class&#x3D;&quot; glyphicon glyphicon-check&quot;&gt;&lt;&#x2F;i&gt;&lt;&#x2F;button&gt;
+                                    &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-primary btn-xs&quot;&gt;&lt;i class&#x3D;&quot; glyphicon glyphicon-pencil&quot;&gt;&lt;&#x2F;i&gt;&lt;&#x2F;button&gt;
+                                    &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-danger btn-xs&quot;&gt;&lt;i class&#x3D;&quot; glyphicon glyphicon-remove&quot;&gt;&lt;&#x2F;i&gt;&lt;&#x2F;button&gt;
+                                &lt;&#x2F;td&gt;
+                            &lt;&#x2F;tr&gt;
+                            &lt;&#x2F;tbody&gt;
+                            &lt;tfoot&gt;
+                            &lt;tr&gt;
+                                &lt;td colspan&#x3D;&quot;6&quot; align&#x3D;&quot;center&quot;&gt;
+                                    &lt;ul class&#x3D;&quot;pagination&quot;&gt;
+                                        &lt;li class&#x3D;&quot;disabled&quot;&gt;&lt;a href&#x3D;&quot;#&quot;&gt;上一页&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+                                        &lt;li class&#x3D;&quot;active&quot;&gt;&lt;a href&#x3D;&quot;#&quot;&gt;1 &lt;span class&#x3D;&quot;sr-only&quot;&gt;(current)&lt;&#x2F;span&gt;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+                                        &lt;li&gt;&lt;a href&#x3D;&quot;#&quot;&gt;2&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+                                        &lt;li&gt;&lt;a href&#x3D;&quot;#&quot;&gt;3&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+                                        &lt;li&gt;&lt;a href&#x3D;&quot;#&quot;&gt;4&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+                                        &lt;li&gt;&lt;a href&#x3D;&quot;#&quot;&gt;5&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+                                        &lt;li&gt;&lt;a href&#x3D;&quot;#&quot;&gt;下一页&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+                                    &lt;&#x2F;ul&gt;
+                                &lt;&#x2F;td&gt;
+                            &lt;&#x2F;tr&gt;
+
+                            &lt;&#x2F;tfoot&gt;
+                        &lt;&#x2F;table&gt;
+                    &lt;&#x2F;div&gt;
+                &lt;&#x2F;div&gt;
+            &lt;&#x2F;div&gt;
+        &lt;&#x2F;div&gt;
+    &lt;&#x2F;div&gt;
+&lt;&#x2F;div&gt;
+&lt;&#x2F;body&gt;
+&lt;&#x2F;html&gt;</code></pre></li><li>修改include-bar.jsp<pre class="language-jsp" data-language="jsp"><code class="language-jsp">&lt;a href&#x3D;&quot;role&#x2F;to&#x2F;page.do&quot;&gt;&lt;i class&#x3D;&quot;glyphicon glyphicon-king&quot;&gt;&lt;&#x2F;i&gt; 角色维护&lt;&#x2F;a&gt;</code></pre></li></ol><h3 id="4-1-4-分页操作"><a href="#4-1-4-分页操作" class="headerlink" title="4.1.4 分页操作"></a>4.1.4 分页操作</h3><ol><li>新建js/my-role.js文件<pre class="language-js" data-language="js"><code class="language-js"><span class="token comment">// 执行分页操作</span>
+<span class="token keyword">function</span> <span class="token function">generatePage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 1.获取分页数据</span>
+    <span class="token keyword">var</span> pageInfo <span class="token operator">=</span> <span class="token function">getPageInfoRemote</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 2.填充表格</span>
+    <span class="token function">fillTableBody</span><span class="token punctuation">(</span>pageInfo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">// 远程访问服务器端程序获取pageInfo数据</span>
+<span class="token keyword">function</span> <span class="token function">getPageInfoRemote</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"pageNum="</span><span class="token operator">+</span>window<span class="token punctuation">.</span>pageNum<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> ajaxResult <span class="token operator">=</span> $<span class="token punctuation">.</span><span class="token function">ajax</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+        url<span class="token operator">:</span> <span class="token string">"role/get/page/info.do"</span><span class="token punctuation">,</span>
+        type<span class="token operator">:</span> <span class="token string">"post"</span><span class="token punctuation">,</span>
+        data<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">"pageNum"</span><span class="token operator">:</span> window<span class="token punctuation">.</span>pageNum<span class="token punctuation">,</span>
+            <span class="token string">"pageSize"</span><span class="token operator">:</span> window<span class="token punctuation">.</span>pageSize<span class="token punctuation">,</span>
+            <span class="token string">"keyword"</span><span class="token operator">:</span> window<span class="token punctuation">.</span>keyword
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        async<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+        dataType<span class="token operator">:</span> <span class="token string">"json"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>ajaxResult<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 判断当前响应状态码是否为200</span>
+    <span class="token keyword">var</span> statusCode <span class="token operator">=</span> ajaxResult<span class="token punctuation">.</span>status<span class="token punctuation">;</span>
+    <span class="token comment">// 如果当前响应状态码不是200，说明出现错误，显示提示信息，让当前函数停止执行</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>statusCode <span class="token operator">!=</span> <span class="token number">200</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        layer<span class="token punctuation">.</span><span class="token function">msg</span><span class="token punctuation">(</span><span class="token string">"失败! 状态码="</span><span class="token operator">+</span>statusCode<span class="token operator">+</span><span class="token string">" 提示信息="</span><span class="token operator">+</span>ajaxResult<span class="token punctuation">.</span>statusText<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">// 如果响应码为200，说明请求处理成功，获取pageInfo</span>
+    <span class="token keyword">var</span> resultEntity <span class="token operator">=</span> ajaxResult<span class="token punctuation">.</span>responseJSON<span class="token punctuation">;</span>
+    <span class="token comment">// 从resultEntity属性中获取result属性</span>
+    <span class="token keyword">var</span> result <span class="token operator">=</span> resultEntity<span class="token punctuation">.</span>result<span class="token punctuation">;</span>
+    <span class="token comment">// 判断result是否成功</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>result <span class="token operator">==</span> <span class="token string">"FAILED"</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        layer<span class="token punctuation">.</span><span class="token function">msg</span><span class="token punctuation">(</span>resultEntity<span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">var</span> pageInfo <span class="token operator">=</span> resultEntity<span class="token punctuation">.</span>data<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> pageInfo<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">// 填充表格</span>
+<span class="token keyword">function</span> <span class="token function">fillTableBody</span><span class="token punctuation">(</span><span class="token parameter">pageInfo</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 清楚原来的内容</span>
+    <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#rolePageBody"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#Pagination"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 判断pageInfo是否有效</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>pageInfo <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">||</span> pageInfo<span class="token punctuation">.</span>list <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">||</span> pageInfo<span class="token punctuation">.</span>list<span class="token punctuation">.</span>length <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#rolePageBody"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"&lt;tr>&lt;td colspan='4' align='center'>抱歉！没有查询到您搜索的数据&lt;/td>&lt;/tr>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">// 使用pageInfo的list属性填充tBody</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> pageInfo<span class="token punctuation">.</span>list<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+        <span class="token keyword">var</span> role <span class="token operator">=</span> pageInfo<span class="token punctuation">.</span>list<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">var</span> roleId <span class="token operator">=</span> role<span class="token punctuation">.</span>id<span class="token punctuation">;</span>
+        <span class="token keyword">var</span> roleName <span class="token operator">=</span> role<span class="token punctuation">.</span>name<span class="token punctuation">;</span>
+
+        <span class="token keyword">var</span> numberTd <span class="token operator">=</span> <span class="token string">"&lt;td>"</span><span class="token operator">+</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">"&lt;/td>"</span><span class="token punctuation">;</span>
+        <span class="token keyword">var</span> checkboxTd <span class="token operator">=</span> <span class="token string">"&lt;td>&lt;input type='checkbox'>&lt;/td>"</span><span class="token punctuation">;</span>
+        <span class="token keyword">var</span> roleNameTd <span class="token operator">=</span> <span class="token string">"&lt;td>"</span><span class="token operator">+</span>roleName<span class="token operator">+</span><span class="token string">"&lt;/td>"</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">var</span> checkBtn <span class="token operator">=</span> <span class="token string">"&lt;button type=\"button\" class=\"btn btn-success btn-xs\">&lt;i class=\" glyphicon glyphicon-check\">&lt;/i>&lt;/button>"</span><span class="token punctuation">;</span>
+        <span class="token keyword">var</span> pencilBtn <span class="token operator">=</span> <span class="token string">"&lt;button type=\"button\" class=\"btn btn-primary btn-xs\">&lt;i class=\" glyphicon glyphicon-pencil\">&lt;/i>&lt;/button>"</span><span class="token punctuation">;</span>
+        <span class="token keyword">var</span> removeBtn <span class="token operator">=</span> <span class="token string">"&lt;button type=\"button\" class=\"btn btn-danger btn-xs\">&lt;i class=\" glyphicon glyphicon-remove\">&lt;/i>&lt;/button>"</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">var</span> buttonTd <span class="token operator">=</span> <span class="token string">"&lt;td>"</span><span class="token operator">+</span>checkBtn<span class="token operator">+</span><span class="token string">" "</span><span class="token operator">+</span>pencilBtn<span class="token operator">+</span><span class="token string">" "</span><span class="token operator">+</span>removeBtn<span class="token operator">+</span><span class="token string">"&lt;/td>"</span>
+        <span class="token keyword">var</span> tr <span class="token operator">=</span> <span class="token string">"&lt;tr>"</span><span class="token operator">+</span>numberTd<span class="token operator">+</span>checkboxTd<span class="token operator">+</span>roleNameTd<span class="token operator">+</span>buttonTd<span class="token operator">+</span><span class="token string">"&lt;/tr>"</span><span class="token punctuation">;</span>
+
+        <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#rolePageBody"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>tr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">// 生成分页导航条</span>
+    <span class="token function">generateNavigator</span><span class="token punctuation">(</span>pageInfo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"生成分页导航条"</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">// 生成分页页码导航条</span>
+<span class="token keyword">function</span> <span class="token function">generateNavigator</span><span class="token punctuation">(</span><span class="token parameter">pageInfo</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token comment">// 获取总记录数</span>
+    <span class="token keyword">var</span> totalRecord <span class="token operator">=</span> pageInfo<span class="token punctuation">.</span>total<span class="token punctuation">;</span>
+
+    <span class="token comment">// 声明相关属性</span>
+    <span class="token keyword">var</span> properties <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"num_edge_entries"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token comment">// 边缘页数</span>
+        <span class="token string">"num_display_entries"</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token comment">// 主体页数</span>
+        <span class="token string">"callback"</span><span class="token operator">:</span> paginationCallBack<span class="token punctuation">,</span>
+        <span class="token string">"items_per_page"</span><span class="token operator">:</span>pageInfo<span class="token punctuation">.</span>pageSize<span class="token punctuation">,</span> <span class="token comment">// 每页显示1项</span>
+        <span class="token string">"current_page"</span><span class="token operator">:</span> pageInfo<span class="token punctuation">.</span>pageNum <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token comment">// Pagination内部使用pageIndex来管理页码，从0开始，而pageNum从1开始</span>
+        <span class="token string">"prev_text"</span><span class="token operator">:</span> <span class="token string">"上一页"</span><span class="token punctuation">,</span>
+        <span class="token string">"next_text"</span><span class="token operator">:</span> <span class="token string">"下一页"</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 调用pagination()函数</span>
+    <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#Pagination"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pagination</span><span class="token punctuation">(</span>totalRecord<span class="token punctuation">,</span> properties<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">// 翻页时的回调函数</span>
+<span class="token keyword">function</span> <span class="token function">paginationCallBack</span><span class="token punctuation">(</span><span class="token parameter">pageIndex<span class="token punctuation">,</span>jQuery</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 根据pageIndex计算得到pageNum</span>
+    window<span class="token punctuation">.</span>pageNum <span class="token operator">=</span> pageIndex <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 调用分页函数</span>
+    <span class="token function">generatePage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 由于每一个页码按钮都是超链接，所以在这个函数最后取消超链接的默认行为</span>
+    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre></li><li>修改role-page.jsp<pre class="language-jsp" data-language="jsp"><code class="language-jsp">&lt;%@include file&#x3D;&quot;include-head.jsp&quot; %&gt;
+&lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;css&#x2F;pagination.css&quot;&gt;
+&lt;script type&#x3D;&quot;text&#x2F;javascript&quot; src&#x3D;&quot;jquery&#x2F;jquery.pagination.js&quot;&gt;&lt;&#x2F;script&gt;
+&lt;script type&#x3D;&quot;text&#x2F;javascript&quot; src&#x3D;&quot;js&#x2F;my-role.js&quot;&gt;&lt;&#x2F;script&gt;
+&lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;
+    $(function ()&#123;
+        &#x2F;&#x2F; 1.为分页操作准备初始化数据
+        window.pageNum &#x3D; 1;
+        window.pageSize &#x3D; 5;
+        window.keyword &#x3D; &quot;&quot;;
+
+        &#x2F;&#x2F; 2. 调用分页函数，实现分页效果
+        generatePage();
+    &#125;);
+&lt;&#x2F;script&gt;</code></pre><pre class="language-jsp" data-language="jsp"><code class="language-jsp">&lt;tbody id&#x3D;&quot;rolePageBody&quot;&gt;&lt;&#x2F;tbody&gt;
+&lt;tfoot&gt;
+&lt;tr&gt;
+    &lt;td colspan&#x3D;&quot;6&quot; align&#x3D;&quot;center&quot;&gt;
+        &lt;div id&#x3D;&quot;Pagination&quot; class&#x3D;&quot;pagination&quot;&gt;&lt;!--这里显示分页--&gt;&lt;&#x2F;div&gt;
+    &lt;&#x2F;td&gt;
+&lt;&#x2F;tr&gt;
+&lt;&#x2F;tfoot&gt;</code></pre></li></ol><h2 id="4-2-角色查询操作"><a href="#4-2-角色查询操作" class="headerlink" title="4.2 角色查询操作"></a>4.2 角色查询操作</h2><h3 id="4-2-1-思路"><a href="#4-2-1-思路" class="headerlink" title="4.2.1 思路"></a>4.2.1 思路</h3><h3 id="4-2-2-代码"><a href="#4-2-2-代码" class="headerlink" title="4.2.2 代码"></a>4.2.2 代码</h3><ol><li><p>标记id</p><pre class="language-jsp" data-language="jsp"><code class="language-jsp">&lt;form class&#x3D;&quot;form-inline&quot; role&#x3D;&quot;form&quot; style&#x3D;&quot;float:left;&quot;&gt;
+    &lt;div class&#x3D;&quot;form-group has-feedback&quot;&gt;
+        &lt;div class&#x3D;&quot;input-group&quot;&gt;
+            &lt;div class&#x3D;&quot;input-group-addon&quot;&gt;查询条件&lt;&#x2F;div&gt;
+            &lt;input id&#x3D;&quot;keywordInput&quot; class&#x3D;&quot;form-control has-success&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;请输入查询条件&quot;&gt;
+        &lt;&#x2F;div&gt;
+    &lt;&#x2F;div&gt;
+    &lt;button id&#x3D;&quot;searchBtn&quot; type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-warning&quot;&gt;&lt;i class&#x3D;&quot;glyphicon glyphicon-search&quot;&gt;&lt;&#x2F;i&gt; 查询&lt;&#x2F;button&gt;
+&lt;&#x2F;form&gt;</code></pre></li><li><p>jQuery中获取</p><pre class="language-js" data-language="js"><code class="language-js"><span class="token comment">// 3. 查询操作</span>
+<span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#searchBtn"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    window<span class="token punctuation">.</span>keyword <span class="token operator">=</span> <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#keywordInput"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">val</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">generatePage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></li></ol><h2 id="4-3-角色保存操作"><a href="#4-3-角色保存操作" class="headerlink" title="4.3 角色保存操作"></a>4.3 角色保存操作</h2><h3 id="4-3-1-说明"><a href="#4-3-1-说明" class="headerlink" title="4.3.1 说明"></a>4.3.1 说明</h3><ol><li>目标：通过模态框实现新增并保存操作</li><li>思路<br><img src="https://raw.githubusercontent.com/JabinHao/mihs/master/blog/crowd_funding/4-3-1.png" srcset="/img/loading.gif"></li><li>模态框：bootstrap提供的 <a target="_blank" rel="noopener" href="https://v3.bootcss.com/javascript/#modals">javascript插件</a>，html代码：<pre class="language-jsp" data-language="jsp"><code class="language-jsp">&lt;div class&#x3D;&quot;modal fade&quot; tabindex&#x3D;&quot;-1&quot; role&#x3D;&quot;dialog&quot;&gt;
+&lt;div class&#x3D;&quot;modal-dialog&quot; role&#x3D;&quot;document&quot;&gt;
+    &lt;div class&#x3D;&quot;modal-content&quot;&gt;
+    &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;close&quot; data-dismiss&#x3D;&quot;modal&quot; aria-label&#x3D;&quot;Close&quot;&gt;&lt;span aria-hidden&#x3D;&quot;true&quot;&gt;&amp;times;&lt;&#x2F;span&gt;&lt;&#x2F;button&gt;
+        &lt;h4 class&#x3D;&quot;modal-title&quot;&gt;Modal title&lt;&#x2F;h4&gt;
+    &lt;&#x2F;div&gt;
+    &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+        &lt;p&gt;One fine body&amp;hellip;&lt;&#x2F;p&gt;
+    &lt;&#x2F;div&gt;
+    &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-default&quot; data-dismiss&#x3D;&quot;modal&quot;&gt;Close&lt;&#x2F;button&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-primary&quot;&gt;Save changes&lt;&#x2F;button&gt;
+    &lt;&#x2F;div&gt;
+    &lt;&#x2F;div&gt;&lt;!-- &#x2F;.modal-content --&gt;
+&lt;&#x2F;div&gt;&lt;!-- &#x2F;.modal-dialog --&gt;
+&lt;&#x2F;div&gt;&lt;!-- &#x2F;.modal --&gt;</code></pre>默认是隐藏的，一般放到页面最后</li></ol><h3 id="4-3-2-代码"><a href="#4-3-2-代码" class="headerlink" title="4.3.2 代码"></a>4.3.2 代码</h3><ol><li><p>新建modal-role-add.jsp</p><pre class="language-jsp" data-language="jsp"><code class="language-jsp">&lt;%@ page contentType&#x3D;&quot;text&#x2F;html;charset&#x3D;UTF-8&quot; language&#x3D;&quot;java&quot; %&gt;
+&lt;div id&#x3D;&quot;addModal&quot; class&#x3D;&quot;modal fade&quot; tabindex&#x3D;&quot;-1&quot; role&#x3D;&quot;dialog&quot;&gt;
+    &lt;div class&#x3D;&quot;modal-dialog&quot; role&#x3D;&quot;document&quot;&gt;
+        &lt;div class&#x3D;&quot;modal-content&quot;&gt;
+            &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;close&quot; data-dismiss&#x3D;&quot;modal&quot; aria-label&#x3D;&quot;Close&quot;&gt;&lt;span aria-hidden&#x3D;&quot;true&quot;&gt;&amp;times;&lt;&#x2F;span&gt;&lt;&#x2F;button&gt;
+                &lt;h4 class&#x3D;&quot;modal-title&quot;&gt;系统弹窗&lt;&#x2F;h4&gt;
+            &lt;&#x2F;div&gt;
+            &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+                &lt;form class&#x3D;&quot;form-signin&quot; role&#x3D;&quot;form&quot;&gt;
+                    &lt;div class&#x3D;&quot;form-group has-success has-feedback&quot;&gt;
+                        &lt;input type&#x3D;&quot;text&quot; name&#x3D;&quot;roleName&quot; class&#x3D;&quot;form-control&quot; placeholder&#x3D;&quot;请输入角色名称&quot; autofocus&gt;
+                        &lt;span class&#x3D;&quot;glyphicon glyphicon-user form-control-feedback&quot;&gt;&lt;&#x2F;span&gt;
+                    &lt;&#x2F;div&gt;
+                &lt;&#x2F;form&gt;
+            &lt;&#x2F;div&gt;
+            &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+                &lt;button id&#x3D;&quot;saveRoleBtn&quot; type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-primary&quot;&gt;保存&lt;&#x2F;button&gt;
+            &lt;&#x2F;div&gt;
+        &lt;&#x2F;div&gt;&lt;!-- &#x2F;.modal-content --&gt;
+    &lt;&#x2F;div&gt;&lt;!-- &#x2F;.modal-dialog --&gt;
+&lt;&#x2F;div&gt;&lt;!-- &#x2F;.modal --&gt;</code></pre></li><li><p>修改role-page.jsp</p><pre class="language-js" data-language="js"><code class="language-js"><span class="token comment">// 4. 点击新增打开模态框</span>
+<span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#showAddModalBtn"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#addModal"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">modal</span><span class="token punctuation">(</span><span class="token string">"show"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 5.模态框数据保存</span>
+<span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#saveRoleBtn"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token comment">// 1.获取用户在模态框中输入的角色名，trim去前后空格</span>
+    <span class="token keyword">var</span> roleName <span class="token operator">=</span> $<span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#addModal [name=roleName]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">val</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"打印：roleName"</span><span class="token operator">+</span>roleName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 发送ajax请求</span>
+    $<span class="token punctuation">.</span><span class="token function">ajax</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+        url<span class="token operator">:</span> <span class="token string">"role/save.do"</span><span class="token punctuation">,</span>
+        type<span class="token operator">:</span> <span class="token string">"post"</span><span class="token punctuation">,</span>
+        data<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+            roleName<span class="token operator">:</span> roleName
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        dataType<span class="token operator">:</span> <span class="token string">"json"</span><span class="token punctuation">,</span>
+        <span class="token function-variable function">success</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">resp</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">let</span> result <span class="token operator">=</span> resp<span class="token punctuation">.</span>result<span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>result <span class="token operator">===</span> <span class="token string">"SUCCESS"</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                layer<span class="token punctuation">.</span><span class="token function">msg</span><span class="token punctuation">(</span><span class="token string">"已保存"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token comment">// 重新加载分页</span>
+                window<span class="token punctuation">.</span>pageNum <span class="token operator">=</span> <span class="token number">99999999</span><span class="token punctuation">;</span>
+                <span class="token function">generatePage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>result <span class="token operator">===</span> <span class="token string">"FAILED"</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                layer<span class="token punctuation">.</span><span class="token function">msg</span><span class="token punctuation">(</span><span class="token string">"操作失败！"</span><span class="token operator">+</span>resp<span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token function-variable function">error</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">resp</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            layer<span class="token punctuation">.</span><span class="token function">msg</span><span class="token punctuation">(</span>resp<span class="token punctuation">.</span>status<span class="token operator">+</span><span class="token string">""</span><span class="token operator">+</span>resp<span class="token punctuation">.</span>statusText<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 关闭模态框</span>
+    <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#addModal"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">modal</span><span class="token punctuation">(</span><span class="token string">"hide"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 清理模态框内容</span>
+    <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#addModal [name=roleName]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">val</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre><pre class="language-jsp" data-language="jsp"><code class="language-jsp">&lt;button type&#x3D;&quot;button&quot; id&#x3D;&quot;showAddModalBtn&quot; class&#x3D;&quot;btn btn-primary&quot; style&#x3D;&quot;float:right;&quot; &gt;&lt;i class&#x3D;&quot;glyphicon glyphicon-plus&quot;&gt;&lt;&#x2F;i&gt; 新增&lt;&#x2F;button&gt;
+</code></pre><pre class="language-jsp" data-language="jsp"><code class="language-jsp">&lt;%@include file&#x3D;&quot;&#x2F;WEB-INF&#x2F;modal-role-add.jsp&quot;%&gt;
+&lt;&#x2F;body&gt;</code></pre></li><li><p>handler</p><pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@ResponseBody</span>
+<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/role/save.do"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token class-name">ResultEntity</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> <span class="token function">saveRole</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestParam</span><span class="token punctuation">(</span><span class="token string">"roleName"</span><span class="token punctuation">)</span> <span class="token class-name">String</span> roleName<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>roleName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    roleService<span class="token punctuation">.</span><span class="token function">saveRole</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Role</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> roleName<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token class-name">ResultEntity</span><span class="token punctuation">.</span><span class="token function">successWithoutData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre></li><li><p>service</p><pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">saveRole</span><span class="token punctuation">(</span><span class="token class-name">Role</span> role<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre><pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">saveRole</span><span class="token punctuation">(</span><span class="token class-name">Role</span> role<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    roleMapper<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>role<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre></li></ol><h2 id="4-4-角色更新操作"><a href="#4-4-角色更新操作" class="headerlink" title="4.4 角色更新操作"></a>4.4 角色更新操作</h2><h3 id="4-4-1-说明"><a href="#4-4-1-说明" class="headerlink" title="4.4.1 说明"></a>4.4.1 说明</h3><ol><li>目标</li><li>思路<br><img src="https://raw.githubusercontent.com/JabinHao/mihs/master/blog/crowd_funding/4-4-1.png" srcset="/img/loading.gif"></li></ol><h3 id="4-4-2-代码"><a href="#4-4-2-代码" class="headerlink" title="4.4.2 代码"></a>4.4.2 代码</h3><ol><li><p>新建modal-role-edit.jsp</p><pre class="language-jsp" data-language="jsp"><code class="language-jsp">&lt;%@ page contentType&#x3D;&quot;text&#x2F;html;charset&#x3D;UTF-8&quot; language&#x3D;&quot;java&quot; %&gt;
+&lt;div id&#x3D;&quot;editModal&quot; class&#x3D;&quot;modal fade&quot; tabindex&#x3D;&quot;-1&quot; role&#x3D;&quot;dialog&quot;&gt;
+    &lt;div class&#x3D;&quot;modal-dialog&quot; role&#x3D;&quot;document&quot;&gt;
+        &lt;div class&#x3D;&quot;modal-content&quot;&gt;
+            &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;close&quot; data-dismiss&#x3D;&quot;modal&quot; aria-label&#x3D;&quot;Close&quot;&gt;&lt;span aria-hidden&#x3D;&quot;true&quot;&gt;&amp;times;&lt;&#x2F;span&gt;&lt;&#x2F;button&gt;
+                &lt;h4 class&#x3D;&quot;modal-title&quot;&gt;系统弹窗&lt;&#x2F;h4&gt;
+            &lt;&#x2F;div&gt;
+            &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+                &lt;form class&#x3D;&quot;form-signin&quot; role&#x3D;&quot;form&quot;&gt;
+                    &lt;div class&#x3D;&quot;form-group has-success has-feedback&quot;&gt;
+                        &lt;input type&#x3D;&quot;text&quot; name&#x3D;&quot;roleName&quot; class&#x3D;&quot;form-control&quot; placeholder&#x3D;&quot;请输入角色名称&quot; autofocus&gt;
+                        &lt;span class&#x3D;&quot;glyphicon glyphicon-user form-control-feedback&quot;&gt;&lt;&#x2F;span&gt;
+                    &lt;&#x2F;div&gt;
+                &lt;&#x2F;form&gt;
+            &lt;&#x2F;div&gt;
+            &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+                &lt;button id&#x3D;&quot;updateRoleBtn&quot; type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-success&quot;&gt;更新&lt;&#x2F;button&gt;
+            &lt;&#x2F;div&gt;
+        &lt;&#x2F;div&gt;&lt;!-- &#x2F;.modal-content --&gt;
+    &lt;&#x2F;div&gt;&lt;!-- &#x2F;.modal-dialog --&gt;
+&lt;&#x2F;div&gt;&lt;!-- &#x2F;.modal --&gt;</code></pre></li><li><p>修改role-page.jsp</p><pre class="language-js" data-language="js"><code class="language-js"><span class="token comment">// 6. 更新</span>
+<span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#rolePageBody"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"click"</span><span class="token punctuation">,</span><span class="token string">".pencilBtn"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token comment">// 打开模态框</span>
+    <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#editModal"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">modal</span><span class="token punctuation">(</span><span class="token string">"show"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 获取表格中当前行中的角色名称</span>
+    <span class="token keyword">var</span> roleName <span class="token operator">=</span> <span class="token function">$</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">parent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">prev</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">text</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 获取当前角色id</span>
+    window<span class="token punctuation">.</span>roleId <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>id<span class="token punctuation">;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"roleId:"</span><span class="token operator">+</span>window<span class="token punctuation">.</span>roleId<span class="token punctuation">)</span>
+    <span class="token comment">// 使用roleName的值设置模态框中的文本框</span>
+    <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#editModal [name=roleName]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">val</span><span class="token punctuation">(</span>roleName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 7.给更新模态框中的更新按钮绑定单机响应函数</span>
+<span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#updateRoleBtn"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token comment">// 从文本框中获取新的角色名称</span>
+    <span class="token keyword">var</span> roleName <span class="token operator">=</span> <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#editModal [name=roleName]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">val</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 发送ajax请求执行更新</span>
+    $<span class="token punctuation">.</span><span class="token function">ajax</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+        url<span class="token operator">:</span> <span class="token string">"role/update.do"</span><span class="token punctuation">,</span>
+        type<span class="token operator">:</span> <span class="token string">"post"</span><span class="token punctuation">,</span>
+        data<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+            id<span class="token operator">:</span> window<span class="token punctuation">.</span>roleId<span class="token punctuation">,</span>
+            name<span class="token operator">:</span> roleName
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        dataType<span class="token operator">:</span> <span class="token string">"json"</span><span class="token punctuation">,</span>
+        <span class="token function-variable function">success</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">resp</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">let</span> result <span class="token operator">=</span> resp<span class="token punctuation">.</span>result<span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>result <span class="token operator">===</span> <span class="token string">"SUCCESS"</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                layer<span class="token punctuation">.</span><span class="token function">msg</span><span class="token punctuation">(</span><span class="token string">"更新成功！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token comment">// 重新加载分页</span>
+                <span class="token function">generatePage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>result <span class="token operator">===</span> <span class="token string">"FAILED"</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                layer<span class="token punctuation">.</span><span class="token function">msg</span><span class="token punctuation">(</span><span class="token string">"操作失败！"</span><span class="token operator">+</span>resp<span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token function-variable function">error</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">resp</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            layer<span class="token punctuation">.</span><span class="token function">msg</span><span class="token punctuation">(</span>resp<span class="token punctuation">.</span>status<span class="token operator">+</span><span class="token string">""</span><span class="token operator">+</span>resp<span class="token punctuation">.</span>statusText<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 关闭模态框</span>
+    <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#editModal"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">modal</span><span class="token punctuation">(</span><span class="token string">"hide"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre><pre class="language-jsp" data-language="jsp"><code class="language-jsp">&lt;button type&#x3D;&quot;button&quot; id&#x3D;&quot;showAddModalBtn&quot; class&#x3D;&quot;btn btn-primary&quot; style&#x3D;&quot;float:right;&quot; &gt;&lt;i class&#x3D;&quot;glyphicon glyphicon-plus&quot;&gt;&lt;&#x2F;i&gt; 新增&lt;&#x2F;button&gt;</code></pre><pre class="language-jsp" data-language="jsp"><code class="language-jsp">&lt;%@include file&#x3D;&quot;&#x2F;WEB-INF&#x2F;modal-role-add.jsp&quot;%&gt;
+&lt;%@include file&#x3D;&quot;&#x2F;WEB-INF&#x2F;modal-role-edit.jsp&quot;%&gt;
+&lt;&#x2F;body&gt;</code></pre></li><li><p>修改 my-role.js，给更新指定id</p><pre class="language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> pencilBtn <span class="token operator">=</span> <span class="token string">"&lt;button id='"</span> <span class="token operator">+</span> roleId <span class="token operator">+</span> <span class="token string">"'type='button' class='btn btn-primary btn-xs pencilBtn'>&lt;i class='glyphicon glyphicon-pencil'>&lt;/i>&lt;/button>"</span><span class="token punctuation">;</span></code></pre></li><li><p>handler</p><pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@ResponseBody</span>
+<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/role/save.do"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token class-name">ResultEntity</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> <span class="token function">saveRole</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestParam</span><span class="token punctuation">(</span><span class="token string">"roleName"</span><span class="token punctuation">)</span> <span class="token class-name">String</span> roleName<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+    roleService<span class="token punctuation">.</span><span class="token function">saveRole</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Role</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> roleName<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token class-name">ResultEntity</span><span class="token punctuation">.</span><span class="token function">successWithoutData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token annotation punctuation">@ResponseBody</span>
+<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/role/update.do"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token class-name">ResultEntity</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> <span class="token function">updateRole</span><span class="token punctuation">(</span><span class="token class-name">Role</span> role<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+    roleService<span class="token punctuation">.</span><span class="token function">updateRole</span><span class="token punctuation">(</span>role<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token class-name">ResultEntity</span><span class="token punctuation">.</span><span class="token function">successWithoutData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre></li><li><p>service</p><pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">updateRole</span><span class="token punctuation">(</span><span class="token class-name">Role</span> role<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre><pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">updateRole</span><span class="token punctuation">(</span><span class="token class-name">Role</span> role<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    roleMapper<span class="token punctuation">.</span><span class="token function">updateByPrimaryKey</span><span class="token punctuation">(</span>role<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre></li></ol><h2 id="4-5-角色删除操作"><a href="#4-5-角色删除操作" class="headerlink" title="4.5 角色删除操作"></a>4.5 角色删除操作</h2><h3 id="4-5-1-说明"><a href="#4-5-1-说明" class="headerlink" title="4.5.1 说明"></a>4.5.1 说明</h3><ol><li>前端的“单条删除” 和“批量删除” 在后端合并为同一套操作。 合并的依据是： 单条删除时 id 也放在数组中， 后端完全根据 id 的数组进行删除</li><li>思路<br><img src="https://raw.githubusercontent.com/JabinHao/mihs/master/blog/crowd_funding/4-5-1.png" srcset="/img/loading.gif"></li></ol><h3 id="4-5-2-后端代码"><a href="#4-5-2-后端代码" class="headerlink" title="4.5.2 后端代码"></a>4.5.2 后端代码</h3><ol><li><p>handler</p><pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@ResponseBody</span>
+<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/role/remove/by/role/id/array.do"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token class-name">ResultEntity</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> <span class="token function">removeByRoleIdArray</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestBody</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">></span></span> roleIdList<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+    roleService<span class="token punctuation">.</span><span class="token function">removeRole</span><span class="token punctuation">(</span>roleIdList<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token keyword">return</span> <span class="token class-name">ResultEntity</span><span class="token punctuation">.</span><span class="token function">successWithoutData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre></li><li><p>service</p><pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">removeRole</span><span class="token punctuation">(</span><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">></span></span> roleIdLList<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre><pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">removeRole</span><span class="token punctuation">(</span><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">></span></span> roleIdLList<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">RoleExample</span> example <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RoleExample</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token class-name">RoleExample<span class="token punctuation">.</span>Criteria</span> criteria <span class="token operator">=</span> example<span class="token punctuation">.</span><span class="token function">createCriteria</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    criteria<span class="token punctuation">.</span><span class="token function">andIdIn</span><span class="token punctuation">(</span>roleIdLList<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    roleMapper<span class="token punctuation">.</span><span class="token function">deleteByExample</span><span class="token punctuation">(</span>example<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre></li></ol><h3 id="4-5-3-前端代码-单个删除"><a href="#4-5-3-前端代码-单个删除" class="headerlink" title="4.5.3 前端代码 - 单个删除"></a>4.5.3 前端代码 - 单个删除</h3><ol><li><p>新建modal-role-confirm.jsp</p><pre class="language-jsp" data-language="jsp"><code class="language-jsp">&lt;%@ page contentType&#x3D;&quot;text&#x2F;html;charset&#x3D;UTF-8&quot; language&#x3D;&quot;java&quot; %&gt;
+&lt;div id&#x3D;&quot;confirmModal&quot; class&#x3D;&quot;modal fade&quot; tabindex&#x3D;&quot;-1&quot; role&#x3D;&quot;dialog&quot;&gt;
+    &lt;div class&#x3D;&quot;modal-dialog&quot; role&#x3D;&quot;document&quot;&gt;
+        &lt;div class&#x3D;&quot;modal-content&quot;&gt;
+            &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;close&quot; data-dismiss&#x3D;&quot;modal&quot; aria-label&#x3D;&quot;Close&quot;&gt;&lt;span aria-hidden&#x3D;&quot;true&quot;&gt;&amp;times;&lt;&#x2F;span&gt;&lt;&#x2F;button&gt;
+                &lt;h4 class&#x3D;&quot;modal-title&quot;&gt;系统弹窗&lt;&#x2F;h4&gt;
+            &lt;&#x2F;div&gt;
+            &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+                &lt;h4&gt;请确认是否要删除下列角色&lt;&#x2F;h4&gt;
+                &lt;div id&#x3D;&quot;roleNameDiv&quot; style&#x3D;&quot;text-align: center;&quot;&gt;&lt;&#x2F;div&gt;
+            &lt;&#x2F;div&gt;
+            &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+                &lt;button id&#x3D;&quot;removeRoleBtn&quot; type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-primary&quot;&gt;确认删除&lt;&#x2F;button&gt;
+            &lt;&#x2F;div&gt;
+        &lt;&#x2F;div&gt;&lt;!-- &#x2F;.modal-content --&gt;
+    &lt;&#x2F;div&gt;&lt;!-- &#x2F;.modal-dialog --&gt;
+&lt;&#x2F;div&gt;&lt;!-- &#x2F;.modal --&gt;</code></pre></li><li><p>my-role.js定义函数</p><pre class="language-js" data-language="js"><code class="language-js"><span class="token comment">// 声明专门的函数，显示确认模态框</span>
+<span class="token keyword">function</span> <span class="token function">showConfirmModal</span><span class="token punctuation">(</span><span class="token parameter">roleArray</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>roleArray<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 打开模态框</span>
+    <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#confirmModal"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">modal</span><span class="token punctuation">(</span><span class="token string">"show"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 清除旧数据</span>
+    <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#roleNameDiv"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 全局变量，存放角色id</span>
+    window<span class="token punctuation">.</span>roleIdArray <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 遍历roleArray数组</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> roleArray<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">var</span> role <span class="token operator">=</span> roleArray<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">var</span> roleName <span class="token operator">=</span> role<span class="token punctuation">.</span>roleName<span class="token punctuation">;</span>
+        <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#roleNameDiv"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>roleName<span class="token operator">+</span><span class="token string">"&lt;br/>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">var</span> roleId <span class="token operator">=</span> role<span class="token punctuation">.</span>roleId<span class="token punctuation">;</span>
+
+        window<span class="token punctuation">.</span>roleIdArray<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>roleId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre></li><li><p>修改my-role.js</p><pre class="language-jsp" data-language="jsp"><code class="language-jsp">var removeBtn &#x3D; &quot;&lt;button id&#x3D;&#39;&quot; + roleId + &quot;&#39; type&#x3D;\&quot;button\&quot; class&#x3D;\&quot;btn btn-danger btn-xs removeBtn\&quot;&gt;&lt;i class&#x3D;\&quot; glyphicon glyphicon-remove\&quot;&gt;&lt;&#x2F;i&gt;&lt;&#x2F;button&gt;&quot;;</code></pre></li><li><p>role-page.jsp</p><pre class="language-js" data-language="js"><code class="language-js"><span class="token comment">// 8. 点击确认模态框中的确认删除按钮执行删除</span>
+<span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#removeRoleBtn"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">let</span> requestBody <span class="token operator">=</span> <span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>window<span class="token punctuation">.</span>roleIdArray<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    $<span class="token punctuation">.</span><span class="token function">ajax</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+        url<span class="token operator">:</span> <span class="token string">"role/remove/by/role/id/array.do"</span><span class="token punctuation">,</span>
+        type<span class="token operator">:</span> <span class="token string">"post"</span><span class="token punctuation">,</span>
+        data<span class="token operator">:</span> requestBody<span class="token punctuation">,</span>
+        contentType<span class="token operator">:</span> <span class="token string">"application/json;charset=utf-8"</span><span class="token punctuation">,</span>
+        dataType<span class="token operator">:</span> <span class="token string">"json"</span><span class="token punctuation">,</span>
+        <span class="token function-variable function">success</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">resp</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">let</span> result <span class="token operator">=</span> resp<span class="token punctuation">.</span>result<span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>result <span class="token operator">===</span> <span class="token string">"SUCCESS"</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                layer<span class="token punctuation">.</span><span class="token function">msg</span><span class="token punctuation">(</span><span class="token string">"删除成功！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token comment">// 重新加载分页</span>
+                <span class="token function">generatePage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>result <span class="token operator">===</span> <span class="token string">"FAILED"</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                layer<span class="token punctuation">.</span><span class="token function">msg</span><span class="token punctuation">(</span><span class="token string">"操作失败！"</span><span class="token operator">+</span>resp<span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token function-variable function">error</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">resp</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        layer<span class="token punctuation">.</span><span class="token function">msg</span><span class="token punctuation">(</span>resp<span class="token punctuation">.</span>status<span class="token operator">+</span><span class="token string">""</span><span class="token operator">+</span>resp<span class="token punctuation">.</span>statusText<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 关闭模态框</span>
+    <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#confirmModal"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">modal</span><span class="token punctuation">(</span><span class="token string">"hide"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 9. 单条删除</span>
+<span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#rolePageBody"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"click"</span><span class="token punctuation">,</span> <span class="token string">".removeBtn"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+
+    <span class="token comment">// 从当前按钮出发获取角色名称</span>
+    <span class="token keyword">let</span> roleName <span class="token operator">=</span> <span class="token function">$</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">parent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">prev</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">text</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 创建role对象存入数组</span>
+    <span class="token keyword">var</span> roleArray <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">&#123;</span>
+        roleId<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>id<span class="token punctuation">,</span>
+        roleName<span class="token operator">:</span> roleName
+    <span class="token punctuation">&#125;</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 调用函数打开模态框</span>
+    <span class="token function">showConfirmModal</span><span class="token punctuation">(</span>roleArray<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 10.给总的checkbox绑定单机响应函数</span>
+<span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#summaryBox"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+
+    <span class="token comment">// 获取当前多选框自身状态</span>
+    <span class="token keyword">var</span> currentStatus <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>checked<span class="token punctuation">;</span>
+
+    <span class="token comment">// 用当前多选框状态设置其它多选框</span>
+    <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">".itemBox"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">"checked"</span><span class="token punctuation">,</span> currentStatus<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre><pre class="language-jsp" data-language="jsp"><code class="language-jsp">&lt;%@include file&#x3D;&quot;&#x2F;WEB-INF&#x2F;modal-role-confirm.jsp&quot;%&gt;
+&lt;&#x2F;body&gt;</code></pre></li></ol><h3 id="4-5-4-前端代码-批量删除"><a href="#4-5-4-前端代码-批量删除" class="headerlink" title="4.5.4 前端代码 - 批量删除"></a>4.5.4 前端代码 - 批量删除</h3><ol><li>修改my-role.js<pre class="language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> checkboxTd <span class="token operator">=</span> <span class="token string">"&lt;td>&lt;input class='itemBox' id='"</span> <span class="token operator">+</span> roleId <span class="token operator">+</span> <span class="token string">"' type='checkbox'>&lt;/td>"</span><span class="token punctuation">;</span></code></pre></li><li>role-page.jsp<pre class="language-js" data-language="js"><code class="language-js"><span class="token comment">// 10.给总的checkbox绑定单机响应函数</span>
+<span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#summaryBox"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+
+    <span class="token comment">// 获取当前多选框自身状态</span>
+    <span class="token keyword">var</span> currentStatus <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>checked<span class="token punctuation">;</span>
+
+    <span class="token comment">// 用当前多选框状态设置其它多选框</span>
+    <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">".itemBox"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">"checked"</span><span class="token punctuation">,</span> currentStatus<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 11.全选全不选的反向操作</span>
+<span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#rolePageBody"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"click"</span><span class="token punctuation">,</span> <span class="token string">".itemBox"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+
+    <span class="token comment">// 获取当前已经选中的.itemBox的数量</span>
+    <span class="token keyword">var</span> checkedBoxCount <span class="token operator">=</span> <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">".itemBox:checked"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+
+    <span class="token comment">// 获取全部.itemBox的数量</span>
+    <span class="token keyword">var</span> totalBoxCount <span class="token operator">=</span> <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">".itemBox"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+
+    <span class="token comment">// 使用两者的比较结果设置总的checkBox</span>
+    <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#summaryBox"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">"checked"</span><span class="token punctuation">,</span> checkedBoxCount <span class="token operator">===</span> totalBoxCount<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 12.给批量删除的按钮绑定单击响应函数</span>
+<span class="token function">$</span><span class="token punctuation">(</span><span class="token string">"#batchRemoveBtn"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+
+    <span class="token comment">// 创建数组对象用来存放后面获取到的角色对象</span>
+    <span class="token keyword">var</span> roleArray <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 遍历当前选中的多选框</span>
+    <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">".itemBox:checked"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">each</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+
+        <span class="token comment">// 使用this引用当前遍历得到的多选框</span>
+        <span class="token keyword">var</span> roleId <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>id<span class="token punctuation">;</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"roleId:"</span><span class="token operator">+</span>roleId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 通过DOM操作获取角色名称</span>
+        <span class="token keyword">var</span> roleName <span class="token operator">=</span> <span class="token function">$</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">parent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">text</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        roleArray<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+            roleId<span class="token operator">:</span> roleId<span class="token punctuation">,</span>
+            roleName<span class="token operator">:</span> roleName
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 检查roleArray的长度是否为0</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>roleArray<span class="token punctuation">.</span>length <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        layer<span class="token punctuation">.</span><span class="token function">msg</span><span class="token punctuation">(</span><span class="token string">"请至少选择一个执行删除"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment">// 调用专门的函数打开确认模态框</span>
+    <span class="token function">showConfirmModal</span><span class="token punctuation">(</span>roleArray<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre><pre class="language-jsp" data-language="jsp"><code class="language-jsp">&lt;button type&#x3D;&quot;button&quot; id&#x3D;&quot;batchRemoveBtn&quot; class&#x3D;&quot;btn btn-danger&quot; style&#x3D;&quot;float:right;margin-left:10px;&quot;&gt;&lt;i class&#x3D;&quot; glyphicon glyphicon-remove&quot;&gt;&lt;&#x2F;i&gt; 删除&lt;&#x2F;button&gt;</code></pre></li></ol></div><hr><div><div class="post-metas mb-3"><div class="post-meta mr-3"><i class="iconfont icon-category"></i> <a class="hover-with-bg" href="/categories/Java%E7%AC%94%E8%AE%B0/">Java笔记</a> <a class="hover-with-bg" href="/categories/Java%E7%AC%94%E8%AE%B0/%E9%A1%B9%E7%9B%AE/">项目</a> <a class="hover-with-bg" href="/categories/Java%E7%AC%94%E8%AE%B0/%E9%A1%B9%E7%9B%AE/%E5%B0%9A%E7%AD%B9%E7%BD%91/">尚筹网</a></div><div class="post-meta"><i class="iconfont icon-tags"></i> <a class="hover-with-bg" href="/tags/java/">java</a> <a class="hover-with-bg" href="/tags/ssm/">ssm</a></div></div><div class="post-prevnext row"><article class="post-prev col-6"><a href="/posts/dd32bff4/"><i class="iconfont icon-arrowleft"></i> <span class="hidden-mobile">Chapter5后台管理 — 菜单维护</span> <span class="visible-mobile">上一篇</span></a></article><article class="post-next col-6"><a href="/posts/5e387227/"><span class="hidden-mobile">Chapter3 后台管理一 — 管理员信息维护</span> <span class="visible-mobile">下一篇</span> <i class="iconfont icon-arrowright"></i></a></article></div></div><article class="comments" id="comments"><div class="disqus" style="width:100%"><div id="disqus_thread"></div><script>function loadDisqus(){addCssLink("https://cdn.jsdelivr.net/npm/disqusjs@1.0/dist/disqusjs.css"),addScript("https://cdn.jsdelivr.net/npm/disqusjs@1.0/dist/disqus.js",(function(){new DisqusJS({shortname:"Jacob",apikey:""})}))}waitElementVisible("disqus_thread",loadDisqus)</script><noscript>Please enable JavaScript to view the <a target="_blank" href="https://disqus.com/?ref_noscript" rel="nofollow noopener noopener">comments powered by Disqus.</a></noscript></div></article></article></div></div></div><div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn"><div id="toc"><p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p><div id="tocbot"></div></div></div></div></div></main><a id="scroll-top-button" href="#" role="button"><i class="iconfont icon-arrowup" aria-hidden="true"></i></a><div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable modal-lg" role="document"><div class="modal-content"><div class="modal-header text-center"><h4 class="modal-title w-100 font-weight-bold">搜索</h4><button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body mx-3"><div class="md-form mb-5"><input type="text" id="local-search-input" class="form-control validate"> <label data-error="x" data-success="v" for="local-search-input">关键词</label></div><div class="list-group" id="local-search-result"></div></div></div></div></div><footer class="mt-5"><div class="text-center py-3"><div><a href="https://github.com/" target="_blank" rel="nofollow noopener"><span>Github</span></a> <i class="iconfont icon-love"></i> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a></div><div><div class="statistics"><span id="busuanzi_container_site_pv" style="display:none">总访问量 <span id="busuanzi_value_site_pv"></span> 次 </span><span id="busuanzi_container_site_uv" style="display:none">总访客数 <span id="busuanzi_value_site_uv"></span> 人</span></div></div><div><span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span><script>var now=new Date;function createtime(){var n=new Date("10/06/2020 00:00:00");now.setTime(now.getTime()+250),days=(now-n)/1e3/60/60/24,dnum=Math.floor(days),hours=(now-n)/1e3/60/60-24*dnum,hnum=Math.floor(hours),1==String(hnum).length&&(hnum="0"+hnum),minutes=(now-n)/1e3/60-1440*dnum-60*hnum,mnum=Math.floor(minutes),1==String(mnum).length&&(mnum="0"+mnum),seconds=(now-n)/1e3-86400*dnum-3600*hnum-60*mnum,snum=Math.round(seconds),1==String(snum).length&&(snum="0"+snum),document.getElementById("timeDate").innerHTML="本站安全运行&nbsp"+dnum+"&nbsp天",document.getElementById("times").innerHTML=hnum+"&nbsp小时&nbsp"+mnum+"&nbsp分&nbsp"+snum+"&nbsp秒"}setInterval("createtime()",250)</script></div></div></footer><script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script><script src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script><script src="/js/debouncer.js"></script><script src="/js/main.js"></script><script src="/js/lazyload.js"></script><script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script><script src="/js/clipboard-use.js"></script><script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js"></script><script>$(document).ready((function(){var t=$("#board-ctn").offset().top;tocbot.init({tocSelector:"#tocbot",contentSelector:"#post-body",headingSelector:"h1,h2,h3,h4,h5,h6",linkClass:"tocbot-link",activeLinkClass:"tocbot-active-link",listClass:"tocbot-list",isCollapsedClass:"tocbot-is-collapsed",collapsibleClass:"tocbot-is-collapsible",collapseDepth:3,scrollSmooth:!0,headingsOffset:-t}),$(".toc-list-item").length>0&&$("#toc").css("visibility","visible")}))</script><script src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js"></script><script>var typed=new Typed("#subtitle",{strings:["  ","Chapter4后台管理 — 角色维护&nbsp;"],cursorChar:"|",typeSpeed:90,loop:!0});typed.stop(),$(document).ready((function(){$(".typed-cursor").addClass("h2"),typed.start()}))</script><script src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js"></script><script>anchors.options={placement:"right",visible:"hover"};var el="h1,h2,h3,h4,h5,h6".split(","),res=[];for(item of el)res.push(".markdown-body > "+item);anchors.add(res.join(", "))</script><script src="/js/local-search.js"></script><script>var path="/local-search.xml",inputArea=document.querySelector("#local-search-input");inputArea.onclick=function(){searchFunc(path,"local-search-input","local-search-result"),this.onclick=null}</script><script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js"></script><link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"><script>$("#post img:not(.no-zoom img, img[no-zoom]), img[zoom]").each((function(){var t=document.createElement("a");$(t).attr("data-fancybox","images"),$(t).attr("href",$(this).attr("src")),$(this).wrap(t)}))</script></body></html>
